@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+build/
+
+# 비밀값 · 로컬 설정
+.env
+.env.*
+!.env.example
+CLAUDE.local.md
+AGENTS.local.md
+.claude/settings.local.json
+
+# 데이터는 커밋하지 않는다 (작품 · UGC · 평가 세트 원본 · 벡터 · 모델)
+data/
+eval/datasets/
+eval/results/
+models/
+*.jsonl
+*.parquet
+*.npy
+
+# 에디터 · OS
+.idea/
+.vscode/
+.DS_Store
