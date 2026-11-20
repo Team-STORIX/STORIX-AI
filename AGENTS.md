@@ -15,7 +15,13 @@ Claude Code · Codex 같은 AI 도구가 같이 읽는 규칙 원본이다. `CLA
 
 ## 자주 쓰는 명령
 
-아직 코드가 없다. FastAPI 뼈대(AI-01a)를 만들 때 여기에 실행 · 테스트 · 평가 명령을 적는다.
+| 목적 | 명령 |
+| --- | --- |
+| 의존성 설치 | `uv sync` |
+| 테스트 | `uv run pytest` |
+| 계약 JSON Schema 다시 만들기 | `uv run python -m schemas.export` |
+
+FastAPI 실행 · 평가 명령은 AI-01a · EV-03 때 추가한다.
 
 ## 폴더
 

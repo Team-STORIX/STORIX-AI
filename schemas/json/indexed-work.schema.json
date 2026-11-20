@@ -1,0 +1,58 @@
+{
+  "$defs": {
+    "EmbeddingModel": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        },
+        "dims": {
+          "title": "Dims",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "dims"
+      ],
+      "title": "EmbeddingModel",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "색인 배치 결과 한 건. 형식이 같으면 안에서 어떤 모델을 쓰든 서빙은 그대로 동작한다.",
+  "properties": {
+    "workId": {
+      "title": "Workid",
+      "type": "integer"
+    },
+    "embedText": {
+      "title": "Embedtext",
+      "type": "string"
+    },
+    "textVector": {
+      "items": {
+        "type": "number"
+      },
+      "title": "Textvector",
+      "type": "array"
+    },
+    "model": {
+      "$ref": "#/$defs/EmbeddingModel"
+    }
+  },
+  "required": [
+    "workId",
+    "embedText",
+    "textVector",
+    "model"
+  ],
+  "title": "IndexedWork",
+  "type": "object"
+}

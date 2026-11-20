@@ -1,0 +1,92 @@
+{
+  "$defs": {
+    "IndexWork": {
+      "additionalProperties": false,
+      "properties": {
+        "workId": {
+          "title": "Workid",
+          "type": "integer"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "title": "Description",
+          "type": "string"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        },
+        "genres": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Genres",
+          "type": "array"
+        },
+        "workType": {
+          "$ref": "#/$defs/WorkType"
+        },
+        "platform": {
+          "title": "Platform",
+          "type": "string"
+        },
+        "completed": {
+          "title": "Completed",
+          "type": "boolean"
+        },
+        "adult": {
+          "title": "Adult",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "workId",
+        "title",
+        "workType",
+        "platform",
+        "completed",
+        "adult"
+      ],
+      "title": "IndexWork",
+      "type": "object"
+    },
+    "WorkType": {
+      "enum": [
+        "WEBTOON",
+        "WEBNOVEL",
+        "BOOK"
+      ],
+      "title": "WorkType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "POST /internal/index/works. 작품 적재 · 수정 · 삭제 때 Spring 이 부른다.",
+  "properties": {
+    "upserts": {
+      "items": {
+        "$ref": "#/$defs/IndexWork"
+      },
+      "maxItems": 500,
+      "title": "Upserts",
+      "type": "array"
+    },
+    "deleteWorkIds": {
+      "items": {
+        "type": "integer"
+      },
+      "maxItems": 500,
+      "title": "Deleteworkids",
+      "type": "array"
+    }
+  },
+  "title": "IndexWorksRequest",
+  "type": "object"
+}

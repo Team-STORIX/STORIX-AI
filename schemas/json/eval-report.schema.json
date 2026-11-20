@@ -1,0 +1,148 @@
+{
+  "$defs": {
+    "EvalCase": {
+      "additionalProperties": false,
+      "properties": {
+        "questionId": {
+          "title": "Questionid",
+          "type": "string"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        },
+        "expectedWorkIds": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Expectedworkids",
+          "type": "array"
+        },
+        "candidateWorkIds": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Candidateworkids",
+          "type": "array"
+        },
+        "recommendedWorkIds": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Recommendedworkids",
+          "type": "array"
+        },
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "failureReason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "검색 누락 · 지어냄 · 정책 위반 · 말투 등",
+          "title": "Failurereason"
+        }
+      },
+      "required": [
+        "questionId",
+        "expectedWorkIds",
+        "candidateWorkIds",
+        "recommendedWorkIds",
+        "passed"
+      ],
+      "title": "EvalCase",
+      "type": "object"
+    },
+    "EvalMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "recallAt10": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Recallat10",
+          "type": "number"
+        },
+        "mrr": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Mrr",
+          "type": "number"
+        },
+        "precisionAt5": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Precisionat5",
+          "type": "number"
+        },
+        "outOfCandidateRate": {
+          "description": "후보 밖 작품을 말한 비율",
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Outofcandidaterate",
+          "type": "number"
+        },
+        "adultExposureRate": {
+          "description": "성인 작품이 나오면 안 되는 질문에서 나온 비율",
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Adultexposurerate",
+          "type": "number"
+        }
+      },
+      "required": [
+        "recallAt10",
+        "mrr",
+        "precisionAt5",
+        "outOfCandidateRate",
+        "adultExposureRate"
+      ],
+      "title": "EvalMetrics",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "채점 결과. PR 평가 · Hub 평가 게이트 · 출시 기준 측정이 같은 형식을 쓴다. 이채연과 같이 확정 전 초안.",
+  "properties": {
+    "pipelineVersion": {
+      "title": "Pipelineversion",
+      "type": "string"
+    },
+    "datasetVersion": {
+      "title": "Datasetversion",
+      "type": "string"
+    },
+    "createdAt": {
+      "format": "date-time",
+      "title": "Createdat",
+      "type": "string"
+    },
+    "metrics": {
+      "$ref": "#/$defs/EvalMetrics"
+    },
+    "cases": {
+      "items": {
+        "$ref": "#/$defs/EvalCase"
+      },
+      "title": "Cases",
+      "type": "array"
+    }
+  },
+  "required": [
+    "pipelineVersion",
+    "datasetVersion",
+    "createdAt",
+    "metrics"
+  ],
+  "title": "EvalReport",
+  "type": "object"
+}

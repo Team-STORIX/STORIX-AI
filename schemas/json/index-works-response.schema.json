@@ -1,0 +1,26 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "indexed": {
+      "title": "Indexed",
+      "type": "integer"
+    },
+    "deleted": {
+      "title": "Deleted",
+      "type": "integer"
+    },
+    "failedWorkIds": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Failedworkids",
+      "type": "array"
+    }
+  },
+  "required": [
+    "indexed",
+    "deleted"
+  ],
+  "title": "IndexWorksResponse",
+  "type": "object"
+}
