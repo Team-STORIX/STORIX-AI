@@ -57,7 +57,7 @@ event: works
 data: {"recommendedWorks":[{"rank":1,"workId":123,"title":"…","thumbnailUrl":"…","platform":"카카오페이지","matchedClues":[{"text":"은발 보라 눈 유아","source":"COVER"}]}],"pipelineVersion":"v1.0"}
 
 event: done
-data: {"chatId":12,"messageId":31}
+data: {"chatId":12,"messageId":31,"status":"OK"}
 ```
 
 | 이벤트 | 앱에서 할 일 |
@@ -74,7 +74,7 @@ data: {"chatId":12,"messageId":31}
 | 이벤트 | AI → Spring | Spring → 앱 |
 | --- | --- | --- |
 | works | `workId` · `reason` · `matchedClues` + 검증용 `candidateWorkIds` | `candidateWorkIds` 를 빼고 제목 · 표지 · 플랫폼을 채움 |
-| done | `status` · 모델별 토큰 `usage` · `elapsedMs` | `chatId` · `messageId`. 토큰 · 시간은 Spring 이 지표로 기록 |
+| done | `status` · 모델별 토큰 `usage` · `elapsedMs` | `chatId` · `messageId` · `status`. 토큰 · 시간은 Spring 이 지표로 기록 |
 | error | `code` (TIMEOUT · LLM_UNAVAILABLE · SEARCH_UNAVAILABLE · INVALID_REQUEST · INTERNAL) · `message` | 사용자용 문구로 바꿔 전달 |
 - `messageId` · `pipelineVersion` · `rank` 는 GA 이벤트와 서버 기록을 이어 붙이는 키
 
@@ -96,10 +96,14 @@ data: {"chatId":12,"messageId":31}
 | status | 의미 | 화면 |
 | --- | --- | --- |
 | OK | 정상 답변. works 가 있으면 카드형 | 작품 추천 대화 (작품 있음) / text 대화 (작품 없음) |
-| NO_RESULT | 맞는 작품 없음. 조건을 더 물어봄 | text 대화 |
-| OFF_TOPIC | 작품 외 질문 | text 대화 |
+| NO_RESULT | 조건에 맞는 작품 없음. 조건을 더 물어봄 | text 대화 |
+| WORK_NOT_FOUND | 특정 작품을 찾는데 작품 DB 에 없음 | text 대화 + 작품 추가 요청 |
+| OFF_TOPIC | 작품에 대한 질문이 아님 | text 대화 |
 | ERROR | 오류 · 한도 초과 | 오류 |
 
+- 앱이 모르는 status 를 받으면 text 대화로 보여 준다. 서버가 상태를 늘려도 앱 업데이트 없이 동작하게
+- 작품 질문인지 · 특정 작품을 찾는 질문인지는 ① 조건 추출(AI-06)에서 같이 판단한다
+- 앱이 받는 `done` 에도 `status` 를 넣어 화면을 고른다 (`{"chatId":12,"messageId":31,"status":"OK"}`)
 - `matchedClues.source` 는 단서가 어디서 왔는지 (COVER, DESCRIPTION, REVIEW 등). 기획서의 "일치 단서의 출처 표기 방식" 논의와 연결
 - 온보딩 멘트와 선택 결과는 UI 대화 기록에 `type: ONBOARDING` 으로 남김 ([onboarding.md](../plan/onboarding.md))
 

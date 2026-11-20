@@ -168,6 +168,7 @@
       "enum": [
         "OK",
         "NO_RESULT",
+        "WORK_NOT_FOUND",
         "OFF_TOPIC"
       ],
       "title": "ResultStatus",
