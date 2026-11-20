@@ -129,7 +129,7 @@ flowchart TB
 | [역할 분담](docs/roles.md) | 작업 목록 · 작업 순서 |
 | [결정 기록](docs/decisions) | 날짜와 이유를 같이 남긴 결정 |
 
-개발 규칙은 [AGENTS.md](AGENTS.md) 에 있습니다.
+개발 규칙은 [AGENTS.md](AGENTS.md), 브랜치 · PR · 릴리스 규칙은 [agents/conventions/git.md](agents/conventions/git.md) 에 있습니다.
 
 ## 📂 File Structure
 
@@ -145,12 +145,6 @@ flowchart TB
 ├── schemas/          # 주고받는 형식 정의 (계약의 원본)
 └── docs/             # 설계 문서
 ```
-
-## 💻 Development
-
-- `develop` 에 기능 PR → `release/vX.Y.Z` → `main` (BE 와 같은 Release 방식)
-- 프롬프트 · 검색 로직을 바꾸면 평가 세트로 점수를 확인하고 PR 에 남깁니다
-- 데이터 · 비밀값 · 서버 주소는 커밋하지 않습니다
 
 <br>
 

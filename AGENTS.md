@@ -41,6 +41,7 @@ Claude Code · Codex 같은 AI 도구가 같이 읽는 규칙 원본이다. `CLA
 | [docs/mvp-data.md](docs/mvp-data.md) | MVP 추천에 쓰는 작품 · 사용자 · 대화 데이터와 안 쓰는 데이터 |
 | [docs/roles.md](docs/roles.md) | 작업 목록 · 담당 · 순서 |
 | [docs/decisions/](docs/decisions) | 결정 기록 |
+| [agents/conventions/git.md](agents/conventions/git.md) | 이슈 · 브랜치 · 커밋 · PR · 라벨 · 릴리스 |
 
 ## 논의 중
 
