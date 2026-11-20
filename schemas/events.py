@@ -17,6 +17,7 @@ class ProgressStep(StrEnum):
 class ResultStatus(StrEnum):
     OK = "OK"
     NO_RESULT = "NO_RESULT"
+    WORK_NOT_FOUND = "WORK_NOT_FOUND"
     OFF_TOPIC = "OFF_TOPIC"
 
 
