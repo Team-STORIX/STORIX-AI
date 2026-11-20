@@ -119,14 +119,14 @@ flowchart TB
 
 | 문서 | 내용 |
 |---|---|
-| [기술 구조](docs/architecture.md) | 전체 구조 · 검색 파이프라인 · 구성 요소 · 응답 흐름 · 인프라 제약 |
-| [색인과 임베딩](docs/indexing.md) | 임베딩 · 데이터별 색인 · 표지 라벨 · VLM vs SigLIP · Elasticsearch |
-| [서빙과 스트리밍](docs/serving.md) | FastAPI · DB 커넥션 · 사용자 데이터 접근 · SSE · 프롬프트 · 대화 기억 |
-| [레포와 API 계약](docs/api-contract.md) | API · SSE 이벤트 · 최종 응답 · 색인 결과 형식 · 평가 결과 형식 |
-| [온보딩 · 챗봇 설정](docs/onboarding.md) | 첫 대화 흐름 · 기본 멘트 · 설정 · 검색 반영 규칙 |
-| [MVP 데이터](docs/mvp-data.md) | 추천에 쓰는 작품 · 사용자 · 대화 데이터 |
-| [개발 계획](docs/plan.md) | 단계 · 기술 스택 · 정책 · 단계별 할 일 · 기대 결과 |
-| [역할 분담](docs/roles.md) | 작업 목록 · 작업 순서 |
+| [기술 구조](docs/architecture/README.md) | 전체 구조 · 검색 파이프라인 · 구성 요소 · 응답 흐름 · 인프라 제약 |
+| └ [색인과 임베딩](docs/architecture/indexing.md) | 임베딩 · 데이터별 색인 · 표지 라벨 · VLM vs SigLIP · Elasticsearch |
+| └ [서빙과 스트리밍](docs/architecture/serving.md) | FastAPI · DB 커넥션 · 사용자 데이터 접근 · SSE · 프롬프트 · 대화 기억 |
+| └ [레포와 API 계약](docs/architecture/api-contract.md) | API · SSE 이벤트 · 최종 응답 · 색인 결과 형식 · 평가 결과 형식 |
+| [개발 계획](docs/plan/README.md) | 단계 · 기술 스택 · 정책 · 단계별 할 일 · 기대 결과 |
+| └ [온보딩 · 챗봇 설정](docs/plan/onboarding.md) | 첫 대화 흐름 · 기본 멘트 · 설정 · 검색 반영 규칙 |
+| └ [MVP 데이터](docs/plan/mvp-data.md) | 추천에 쓰는 작품 · 사용자 · 대화 데이터 |
+| └ [역할 분담 · 작업 순서](docs/plan/roles.md) | 작업 목록 · 담당 · 순서 |
 | [결정 기록](docs/decisions) | 날짜와 이유를 같이 남긴 결정 |
 
 개발 규칙은 [AGENTS.md](AGENTS.md), 브랜치 · PR · 릴리스 규칙은 [agents/conventions/git.md](agents/conventions/git.md) 에 있습니다.

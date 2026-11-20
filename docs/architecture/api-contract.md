@@ -1,5 +1,7 @@
 # 레포와 API 계약
 
+> 상위 문서: [기술 구조](README.md) · 같은 묶음: [색인과 임베딩](indexing.md) · [서빙과 스트리밍](serving.md)
+
 형식의 원본은 `schemas/` 다. 이 문서는 초안이고, 확정되면 `schemas/` 와 맞춘다.
 
 ## 1. 레포: STORIX-AI
@@ -92,7 +94,7 @@ data: {"chatId":12,"messageId":31}
 | ERROR | 오류 · 한도 초과 | 오류 |
 
 - `matchedClues.source` 는 단서가 어디서 왔는지 (COVER, DESCRIPTION, REVIEW 등). 기획서의 "일치 단서의 출처 표기 방식" 논의와 연결
-- 온보딩 멘트와 선택 결과는 UI 대화 기록에 `type: ONBOARDING` 으로 남김 ([onboarding.md](onboarding.md))
+- 온보딩 멘트와 선택 결과는 UI 대화 기록에 `type: ONBOARDING` 으로 남김 ([onboarding.md](../plan/onboarding.md))
 
 ## 5. 색인 결과 형식
 
@@ -137,7 +139,7 @@ flowchart LR
 - 바꿀 때마다 "무엇을 바꿨더니 몇 % 올랐다"를 표로 남김
 - 실패한 답변은 원인(검색 누락, 라벨 오류, 프롬프트, 모델)별로 분류해 개선 순서를 정함
 - 채점 스크립트(`eval/`)는 CLI 한 번으로 돌고 결과를 JSON 으로 낸다. PR 평가 · Hub 평가 게이트 · 출시 기준 측정이 같은 형식을 쓴다. 항목은 AI-02 에서 확정한다
-- 출시 · 배포 기준은 [plan.md](plan.md)
+- 출시 · 배포 기준은 [plan.md](../plan/README.md)
 
 ---
 

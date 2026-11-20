@@ -30,7 +30,7 @@
 
 ## 3. 레포 · 데이터
 
-전체 흐름과 파이프라인 ①~⑦ 은 [architecture.md](architecture.md), API 는 [api-contract.md](api-contract.md)
+전체 흐름과 파이프라인 ①~⑦ 은 [architecture.md](../architecture/README.md), API 는 [api-contract.md](../architecture/api-contract.md)
 
 ```
 STORIX-AI-Hub/           # 비공개 레포
@@ -218,7 +218,15 @@ v2 에서도 약한 질문: "그림체 예쁜" · "파스텔톤"(3단계 SigLIP)
 | 사후 | 첫 글자 · 전체 응답 시간, 답변당 토큰 · 비용 | 기다릴 만한가, 예산 안인가 |
 
 - 평가 세트는 생성형 AI 로 초안을 만들고 사람이 검수한다. 원본은 커밋하지 않는다
-- 지표 정의와 채점 형식은 [api-contract.md](api-contract.md)
+- 지표 정의와 채점 형식은 [api-contract.md](../architecture/api-contract.md)
+
+## 하위 문서
+
+| 문서 | 내용 |
+| --- | --- |
+| [첫 대화 온보딩 · 챗봇 설정](onboarding.md) | 온보딩 흐름 · 기본 멘트 · 챗봇 설정 · 검색 반영 규칙 |
+| [추천에 쓰이는 MVP 데이터](mvp-data.md) | 작품 · 사용자 · 대화 데이터, MVP 에서 안 쓰는 것 |
+| [역할 분담 · 작업 순서](roles.md) | 작업 목록 · 담당 · 사람별 순서와 맞춤 지점 |
 
 ---
 

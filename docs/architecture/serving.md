@@ -1,5 +1,7 @@
 # 서빙과 스트리밍
 
+> 상위 문서: [기술 구조](README.md) · 같은 묶음: [색인과 임베딩](indexing.md) · [레포와 API 계약](api-contract.md)
+
 ## 1. 구조
 
 ```mermaid
