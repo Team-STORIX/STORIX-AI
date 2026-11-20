@@ -35,9 +35,10 @@ Claude Code · Codex 같은 AI 도구가 같이 읽는 규칙 원본이다. `CLA
 | [docs/architecture.md](docs/architecture.md) | 전체 구조, 파이프라인 ①~⑦, 구성 요소, 인프라 제약 |
 | [docs/indexing.md](docs/indexing.md) | 임베딩, embed_text, 표지 라벨, ES 매핑 · 적재 |
 | [docs/serving.md](docs/serving.md) | FastAPI, 요청 흐름과 DB 커넥션, 내부 API, SSE, 답변 레이어, 대화 기억 |
-| [docs/api-contract.md](docs/api-contract.md) | 앱 · Spring · AI 사이 API, 응답 형식, SSE 이벤트 |
+| [docs/api-contract.md](docs/api-contract.md) | 레포 구조, 앱 · Spring · AI 사이 API, 응답 형식, SSE 이벤트, 개발 순서, 평가 지표 |
 | [docs/onboarding.md](docs/onboarding.md) | 첫 대화 온보딩과 챗봇 설정 |
-| [docs/plan.md](docs/plan.md) | 단계별 범위, 기대 결과, 출시 · 배포 기준, 평가 지표 |
+| [docs/plan.md](docs/plan.md) | 단계별 범위, 기술 스택, 데이터, 기대 결과, 출시 · 배포 기준, 평가 지표 |
+| [docs/mvp-data.md](docs/mvp-data.md) | MVP 추천에 쓰는 작품 · 사용자 · 대화 데이터와 안 쓰는 데이터 |
 | [docs/roles.md](docs/roles.md) | 작업 목록 · 담당 · 순서 |
 | [docs/decisions/](docs/decisions) | 결정 기록 |
 
@@ -48,3 +49,5 @@ Claude Code · Codex 같은 AI 도구가 같이 읽는 규칙 원본이다. `CLA
 | 질문 · 작품 임베딩 모델 | Claude API 는 임베딩을 제공하지 않아 별도 모델이 필요. 후보 비교(AI-03a) 필요 |
 | AI 서버 · ES 위치 | 앱 서버(메모리 4GB)에 같이 둘지, 분리할지 |
 | 사용 제한을 켤 비용 기준 | 비용 지표를 모은 뒤 결정 |
+| MVP 조건 추출 항목 | 파이프라인 ① 에는 소재 · 분위기가 있지만 AI-06 작업 목록에는 없음. 팀 확인 필요 |
+| 관심작품 · 취향의 MVP 사용 방식 | 내부 API 로 가져오지만 순위 반영 방법은 안 정해짐 ([mvp-data.md](docs/mvp-data.md)) |
