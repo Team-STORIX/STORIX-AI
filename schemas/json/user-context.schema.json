@@ -1,0 +1,36 @@
+{
+  "additionalProperties": false,
+  "description": "GET /internal/users/{userId}/context 응답. 닉네임 · 이메일은 넣지 않는다.",
+  "properties": {
+    "preferredGenres": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Preferredgenres",
+      "type": "array"
+    },
+    "preferredHashtags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Preferredhashtags",
+      "type": "array"
+    },
+    "libraryWorkIds": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Libraryworkids",
+      "type": "array"
+    },
+    "favoriteWorkIds": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Favoriteworkids",
+      "type": "array"
+    }
+  },
+  "title": "UserContext",
+  "type": "object"
+}

@@ -69,6 +69,13 @@ data: {"chatId":12,"messageId":31}
 | error | 오류 화면 |
 
 - `title` · `thumbnailUrl` · `platform` 은 Spring 이 DB 값으로 채운다. AI 서버는 `workId` · 이유 · 단서만 보낸다
+- 위 예시는 Spring → 앱 형식이다. AI → Spring 이벤트는 [schemas/events.py](../../schemas/events.py) 가 원본이고 차이는 아래와 같다
+
+| 이벤트 | AI → Spring | Spring → 앱 |
+| --- | --- | --- |
+| works | `workId` · `reason` · `matchedClues` + 검증용 `candidateWorkIds` | `candidateWorkIds` 를 빼고 제목 · 표지 · 플랫폼을 채움 |
+| done | `status` · 모델별 토큰 `usage` · `elapsedMs` | `chatId` · `messageId`. 토큰 · 시간은 Spring 이 지표로 기록 |
+| error | `code` (TIMEOUT · LLM_UNAVAILABLE · SEARCH_UNAVAILABLE · INVALID_REQUEST · INTERNAL) · `message` | 사용자용 문구로 바꿔 전달 |
 - `messageId` · `pipelineVersion` · `rank` 는 GA 이벤트와 서버 기록을 이어 붙이는 키
 
 ## 4. 최종 응답 (대화 기록 조회 형식)

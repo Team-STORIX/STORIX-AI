@@ -1,0 +1,79 @@
+{
+  "$defs": {
+    "ClueSource": {
+      "enum": [
+        "DESCRIPTION",
+        "TAG",
+        "GENRE",
+        "COVER",
+        "REVIEW"
+      ],
+      "title": "ClueSource",
+      "type": "string"
+    },
+    "RecommendClue": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/ClueSource"
+        }
+      },
+      "required": [
+        "text",
+        "source"
+      ],
+      "title": "RecommendClue",
+      "type": "object"
+    },
+    "RecommendPick": {
+      "additionalProperties": false,
+      "properties": {
+        "workId": {
+          "description": "후보 목록에 있는 작품 ID 만",
+          "title": "Workid",
+          "type": "integer"
+        },
+        "reason": {
+          "maxLength": 200,
+          "title": "Reason",
+          "type": "string"
+        },
+        "matchedClues": {
+          "items": {
+            "$ref": "#/$defs/RecommendClue"
+          },
+          "maxItems": 3,
+          "title": "Matchedclues",
+          "type": "array"
+        }
+      },
+      "required": [
+        "workId",
+        "reason"
+      ],
+      "title": "RecommendPick",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Sonnet 의 recommend_works 도구 입력. 배열 순서 = 추천 순위.",
+  "properties": {
+    "works": {
+      "items": {
+        "$ref": "#/$defs/RecommendPick"
+      },
+      "maxItems": 5,
+      "title": "Works",
+      "type": "array"
+    }
+  },
+  "required": [
+    "works"
+  ],
+  "title": "RecommendWorksInput",
+  "type": "object"
+}

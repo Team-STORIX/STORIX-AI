@@ -1,0 +1,142 @@
+{
+  "$defs": {
+    "ChatContext": {
+      "additionalProperties": false,
+      "description": "대화방 단위 맥락. 최근 25턴까지.",
+      "properties": {
+        "turns": {
+          "items": {
+            "$ref": "#/$defs/ChatTurn"
+          },
+          "maxItems": 25,
+          "title": "Turns",
+          "type": "array"
+        },
+        "shownWorkIds": {
+          "description": "이 대화방에서 이미 보여 준 작품",
+          "items": {
+            "type": "integer"
+          },
+          "title": "Shownworkids",
+          "type": "array"
+        },
+        "conditions": {
+          "description": "사용자가 붙인 조건. 예: \"완결작만\"",
+          "items": {
+            "type": "string"
+          },
+          "title": "Conditions",
+          "type": "array"
+        }
+      },
+      "title": "ChatContext",
+      "type": "object"
+    },
+    "ChatTurn": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "pattern": "^(user|assistant)$",
+          "title": "Role",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "workIds": {
+          "description": "이 턴에 보여 준 작품",
+          "items": {
+            "type": "integer"
+          },
+          "title": "Workids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "role",
+        "text"
+      ],
+      "title": "ChatTurn",
+      "type": "object"
+    },
+    "SearchPolicy": {
+      "additionalProperties": false,
+      "description": "Spring 이 매 질문마다 확인해서 넘기는 정책값. AI 서버는 바꾸지 않는다.",
+      "properties": {
+        "adultAllowed": {
+          "description": "설정 켜짐 + 지금 성인 인증 유효일 때만 true",
+          "title": "Adultallowed",
+          "type": "boolean"
+        },
+        "workTypes": {
+          "description": "챗봇 설정의 작품 유형. 비어 있으면 상관없음",
+          "items": {
+            "$ref": "#/$defs/WorkType"
+          },
+          "title": "Worktypes",
+          "type": "array"
+        },
+        "excludedWorkIds": {
+          "description": "서재에 있는 작품. 추천에서 뺀다",
+          "items": {
+            "type": "integer"
+          },
+          "title": "Excludedworkids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "adultAllowed"
+      ],
+      "title": "SearchPolicy",
+      "type": "object"
+    },
+    "WorkType": {
+      "enum": [
+        "WEBTOON",
+        "WEBNOVEL",
+        "BOOK"
+      ],
+      "title": "WorkType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "POST /internal/search/stream 요청. 응답은 SSE.",
+  "properties": {
+    "chatId": {
+      "title": "Chatid",
+      "type": "integer"
+    },
+    "messageId": {
+      "title": "Messageid",
+      "type": "integer"
+    },
+    "userId": {
+      "title": "Userid",
+      "type": "integer"
+    },
+    "question": {
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Question",
+      "type": "string"
+    },
+    "policy": {
+      "$ref": "#/$defs/SearchPolicy"
+    },
+    "context": {
+      "$ref": "#/$defs/ChatContext"
+    }
+  },
+  "required": [
+    "chatId",
+    "messageId",
+    "userId",
+    "question",
+    "policy"
+  ],
+  "title": "SearchStreamRequest",
+  "type": "object"
+}

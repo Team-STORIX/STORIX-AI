@@ -1,0 +1,291 @@
+{
+  "$defs": {
+    "ClueSource": {
+      "enum": [
+        "DESCRIPTION",
+        "TAG",
+        "GENRE",
+        "COVER",
+        "REVIEW"
+      ],
+      "title": "ClueSource",
+      "type": "string"
+    },
+    "DoneEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "event": {
+          "const": "done",
+          "default": "done",
+          "title": "Event",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/ResultStatus"
+        },
+        "usage": {
+          "description": "모델 호출마다 하나",
+          "items": {
+            "$ref": "#/$defs/Usage"
+          },
+          "title": "Usage",
+          "type": "array"
+        },
+        "elapsedMs": {
+          "title": "Elapsedms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "status",
+        "elapsedMs"
+      ],
+      "title": "DoneEvent",
+      "type": "object"
+    },
+    "ErrorCode": {
+      "enum": [
+        "TIMEOUT",
+        "LLM_UNAVAILABLE",
+        "SEARCH_UNAVAILABLE",
+        "INVALID_REQUEST",
+        "INTERNAL"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "ErrorEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "event": {
+          "const": "error",
+          "default": "error",
+          "title": "Event",
+          "type": "string"
+        },
+        "code": {
+          "$ref": "#/$defs/ErrorCode"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorEvent",
+      "type": "object"
+    },
+    "MatchedClue": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/ClueSource"
+        }
+      },
+      "required": [
+        "text",
+        "source"
+      ],
+      "title": "MatchedClue",
+      "type": "object"
+    },
+    "ProgressEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "event": {
+          "const": "progress",
+          "default": "progress",
+          "title": "Event",
+          "type": "string"
+        },
+        "step": {
+          "$ref": "#/$defs/ProgressStep"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "step",
+        "message"
+      ],
+      "title": "ProgressEvent",
+      "type": "object"
+    },
+    "ProgressStep": {
+      "enum": [
+        "UNDERSTANDING",
+        "SEARCHING",
+        "FOUND",
+        "ANSWERING"
+      ],
+      "title": "ProgressStep",
+      "type": "string"
+    },
+    "RecommendedWork": {
+      "additionalProperties": false,
+      "description": "AI 서버는 ID · 이유 · 단서만 보낸다. 제목 · 표지 · 플랫폼은 Spring 이 DB 값으로 채운다.",
+      "properties": {
+        "rank": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Rank",
+          "type": "integer"
+        },
+        "workId": {
+          "title": "Workid",
+          "type": "integer"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "matchedClues": {
+          "items": {
+            "$ref": "#/$defs/MatchedClue"
+          },
+          "title": "Matchedclues",
+          "type": "array"
+        }
+      },
+      "required": [
+        "rank",
+        "workId",
+        "reason"
+      ],
+      "title": "RecommendedWork",
+      "type": "object"
+    },
+    "ResultStatus": {
+      "enum": [
+        "OK",
+        "NO_RESULT",
+        "OFF_TOPIC"
+      ],
+      "title": "ResultStatus",
+      "type": "string"
+    },
+    "TokenEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "event": {
+          "const": "token",
+          "default": "token",
+          "title": "Event",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "TokenEvent",
+      "type": "object"
+    },
+    "Usage": {
+      "additionalProperties": false,
+      "properties": {
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "inputTokens": {
+          "title": "Inputtokens",
+          "type": "integer"
+        },
+        "outputTokens": {
+          "title": "Outputtokens",
+          "type": "integer"
+        },
+        "cacheReadTokens": {
+          "default": 0,
+          "title": "Cachereadtokens",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "model",
+        "inputTokens",
+        "outputTokens"
+      ],
+      "title": "Usage",
+      "type": "object"
+    },
+    "WorksEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "event": {
+          "const": "works",
+          "default": "works",
+          "title": "Event",
+          "type": "string"
+        },
+        "recommendedWorks": {
+          "items": {
+            "$ref": "#/$defs/RecommendedWork"
+          },
+          "maxItems": 5,
+          "title": "Recommendedworks",
+          "type": "array"
+        },
+        "candidateWorkIds": {
+          "description": "검색 후보. Spring 이 추천 작품이 후보 안에 있는지 확인할 때 쓴다",
+          "items": {
+            "type": "integer"
+          },
+          "title": "Candidateworkids",
+          "type": "array"
+        },
+        "pipelineVersion": {
+          "title": "Pipelineversion",
+          "type": "string"
+        }
+      },
+      "required": [
+        "recommendedWorks",
+        "candidateWorkIds",
+        "pipelineVersion"
+      ],
+      "title": "WorksEvent",
+      "type": "object"
+    }
+  },
+  "discriminator": {
+    "mapping": {
+      "done": "#/$defs/DoneEvent",
+      "error": "#/$defs/ErrorEvent",
+      "progress": "#/$defs/ProgressEvent",
+      "token": "#/$defs/TokenEvent",
+      "works": "#/$defs/WorksEvent"
+    },
+    "propertyName": "event"
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/ProgressEvent"
+    },
+    {
+      "$ref": "#/$defs/TokenEvent"
+    },
+    {
+      "$ref": "#/$defs/WorksEvent"
+    },
+    {
+      "$ref": "#/$defs/DoneEvent"
+    },
+    {
+      "$ref": "#/$defs/ErrorEvent"
+    }
+  ]
+}
