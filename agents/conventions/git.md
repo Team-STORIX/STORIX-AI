@@ -11,6 +11,7 @@
 | PR | base 는 `develop`. 본문 관련 이슈에 `Closes #N` |
 | 머지 | `develop` PR 은 merge commit, `main` Release PR 만 squash |
 | 릴리스 | `main` 에서 `release/vX.Y.Z` 를 따서 나갈 커밋을 cherry-pick, PR 제목은 `Release vX.Y.Z` |
+| 태그 | `main` 에 `Release vX.Y.Z (#N)` 커밋이 들어오면 `release.yml` 이 태그 · GitHub Release 를 만든다. 본문의 `PR #N의 커밋 cherry-pick (제목)` 줄로 릴리스 노트를 쓴다 |
 
 `develop` · `main` 에 직접 push 하지 않는다.
 
