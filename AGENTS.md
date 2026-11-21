@@ -21,8 +21,10 @@ Claude Code · Codex 같은 AI 도구가 같이 읽는 규칙 원본이다. `CLA
 | 테스트 | `uv run pytest` |
 | 계약 JSON Schema 다시 만들기 | `uv run python -m schemas.export` |
 | 로컬 서버 | `cp .env.example .env` 후 토큰을 채우고 `uv run uvicorn serving.main:app --reload --port 8090` |
+| 이미지 빌드 · 실행 | `docker build -t storix-ai .` → `docker run --env-file .env -p 8090:8090 storix-ai` |
 
 - `/health` 만 열려 있고 `/internal/**` 는 `X-Internal-Token` 헤더가 맞아야 한다. API 문서 화면은 끈다
+- CI(`.github/workflows/ci.yml`)는 PR · push 마다 pytest 와 이미지 빌드 · `/health` 기동 확인을 한다. ECR push · 배포는 배포 위치가 정해지면 붙인다
 - 평가 명령은 EV-03 때 추가한다
 
 ## 폴더
