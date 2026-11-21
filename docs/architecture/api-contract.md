@@ -57,7 +57,7 @@ event: token
 data: {"text":"흑발 귀족 보호자가 나오는 육아물 위주로 골라 봤어요."}
 
 event: works
-data: {"recommendedWorks":[{"rank":1,"workId":123,"title":"…","thumbnailUrl":"…","platform":"카카오페이지","matchedClues":[{"text":"은발 보라 눈 유아","source":"COVER"}]}],"pipelineVersion":"v1.0"}
+data: {"recommendedWorks":[{"rank":1,"workId":123,"title":"…","thumbnailUrl":"…","platform":"카카오페이지","genre":"로판","matchedClues":[{"text":"은발 보라 눈 유아","source":"COVER"}]}],"pipelineVersion":"v1.0"}
 
 event: done
 data: {"messageId":31,"status":"OK"}
@@ -71,12 +71,12 @@ data: {"messageId":31,"status":"OK"}
 | done | 입력창 다시 켜기 |
 | error | 오류 화면 |
 
-- `title` · `thumbnailUrl` · `platform` 은 Spring 이 DB 값으로 채운다. AI 서버는 `workId` · 이유 · 단서만 보낸다
+- `title` · `thumbnailUrl` · `platform` · `genre` 는 Spring 이 DB 값으로 채운다. AI 서버는 `workId` · 이유 · 단서만 보낸다
 - 위 예시는 Spring → 앱 형식이다. AI → Spring 이벤트는 [schemas/events.py](../../schemas/events.py) 가 원본이고 차이는 아래와 같다
 
 | 이벤트 | AI → Spring | Spring → 앱 |
 | --- | --- | --- |
-| works | `workId` · `reason` · `matchedClues` + 검증용 `candidateWorkIds` | `candidateWorkIds` 를 빼고 제목 · 표지 · 플랫폼을 채움 |
+| works | `workId` · `reason` · `matchedClues` + 검증용 `candidateWorkIds` | `candidateWorkIds` 를 빼고 제목 · 표지 · 플랫폼 · 장르를 채움 |
 | done | `status` · 모델별 토큰 `usage` · `elapsedMs` | `messageId` · `status`. 토큰 · 시간은 Spring 이 지표로 기록 |
 | error | `code` (TIMEOUT · LLM_UNAVAILABLE · SEARCH_UNAVAILABLE · INVALID_REQUEST · INTERNAL) · `message` | 사용자용 문구로 바꿔 전달 |
 - `messageId` · `pipelineVersion` · `rank` 는 GA 이벤트와 서버 기록을 이어 붙이는 키
