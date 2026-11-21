@@ -46,6 +46,6 @@ jobs:
       - name: 기동 확인
         run: |
           docker run -d --name ai -e STORIX_AI_INTERNAL_TOKEN=ci-token -p 8090:8090 storix-ai:ci
-          for i in $(seq 1 20); do curl -sf localhost:8090/health && exit 0; sleep 1; done
+          for _ in $(seq 1 20); do curl -sf localhost:8090/health && exit 0; sleep 1; done
           docker logs ai
           exit 1
