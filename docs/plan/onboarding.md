@@ -42,9 +42,9 @@ flowchart TD
 
 | API | 설명 |
 | --- | --- |
-| `POST /api/v1/ai-search/chats` | 대화방 생성. 온보딩을 안 봤으면 멘트 · 선택지 · 19금 질문 노출 여부를 같이 내려줌 |
-| `GET /api/v1/ai-search/settings` | 챗봇 설정 조회 |
-| `PUT /api/v1/ai-search/settings` | 온보딩 ④ 와 설정 화면이 같은 API 사용. 저장할 때 온보딩 버전도 기록 |
+| `GET /api/v1/ai/chat` | 진입. 온보딩을 볼 차례면 멘트 · 선택지 · 19금 질문 노출 여부를 같이 내려줌. 대화방은 사용자당 하나라 따로 만들지 않음 |
+| `GET /api/v1/ai/chat/settings` | 챗봇 설정 조회 |
+| `PUT /api/v1/ai/chat/settings` | 온보딩 ④ 와 설정 화면이 같은 API 사용. 저장할 때 온보딩 버전도 기록 |
 
 ## 5. 검색 반영 규칙
 

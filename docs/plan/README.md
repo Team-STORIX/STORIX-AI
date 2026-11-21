@@ -45,8 +45,8 @@ STORIX-BE 추가분
 
 | 위치 | 내용 |
 | --- | --- |
-| Domain 모듈 `aisearch` | 대화방 · 메시지 · AI 검색 설정 엔티티, Adaptor, Service. `agents/domains.yaml` 에 등록 |
-| Api 모듈 `aisearch` | Controller · UseCase. FastAPI SSE 를 받아 앱으로 전달, 작품 ID 검증, 카드 정보 채우기 |
+| Domain 모듈 `aichat` | 대화방 · 메시지 · 챗봇 설정 엔티티, Adaptor, Service. `agents/domains.yaml` 에 등록 |
+| Api 모듈 `aichat` | Controller · UseCase (`/api/v1/ai/chat`). FastAPI SSE 를 받아 앱으로 전달, 작품 ID 검증, 카드 정보 채우기 |
 | 내부 API | AI 서버만 부르는 사용자 맥락 조회 (취향, 서재 · 관심작품 ID). 외부 차단, 서비스 토큰 |
 | 작품 적재 연동 | 작품 적재 · 수정 · 삭제 때 AI 색인 요청 |
 
@@ -54,9 +54,9 @@ STORIX-BE 추가분
 
 | 저장 위치 | 내용 |
 | --- | --- |
-| MySQL `ai_chat` | 대화방. 사용자, 만든 시각, 마지막 사용 시각 |
-| MySQL `ai_chat_message` | 질문 · 답변, 추천한 작품 ID, `pipeline_version`, 프롬프트 버전, 토큰 수 |
-| MySQL `ai_search_setting` | 19금 추천 on/off, 기본 작품 유형 |
+| MySQL `ai_chats` | 대화방. 사용자당 하나, 만든 시각, 마지막 사용 시각 |
+| MySQL `ai_chat_messages` | 질문 · 답변 · 온보딩 기록, 추천 작품(순위 · ID · 이유 · 단서), `pipeline_version`. 토큰 수 · 응답 시간은 지표로만 |
+| MySQL `ai_chat_settings` | 19금 추천 on/off, 작품 유형, 본 온보딩 버전 |
 | Redis | 진행 중 대화 최근 25개, 이미 보여 준 작품 ID, 사용자가 붙인 조건 |
 | Elasticsearch `works_ai` (별칭) | 작품별 embed_text · 벡터 · 필터 값. 모델을 바꿀 땐 새 인덱스를 다 채운 뒤 별칭만 교체 |
 
@@ -92,7 +92,7 @@ MVP 에서 실제로 쓰는 데이터는 [mvp-data.md](mvp-data.md)
 | 영역 | 할 일 |
 | --- | --- |
 | AI 서버 | 작품 DB(설명 · 태그 · 장르) 색인 배치와 `works_ai`, ① 조건 추출, ② 필터 + ③ 하이브리드 검색, ⑦ 답변(Sonnet · ~해요체 · 최대 5개 · `recommend_works`), Claude 스트림 → SSE 변환, 범위 밖 · 결과 없음 고정 문구, 작품 색인 · 삭제 내부 API |
-| 백엔드 | `aisearch` 도메인 · 마이그레이션, 앱 API 5종 · SSE 전달, 작품 ID 검증 · 카드 정보 채우기 · 서재 제외, 미성년자 · 19금 설정 반영, 사용자 맥락 내부 API · 서비스 토큰, 작품 적재 때 색인 요청, 스트리밍 동안 DB 커넥션 안 잡기 |
+| 백엔드 | `aichat` 도메인 · 마이그레이션, 앱 API 4종(진입 · 지난 대화 · 질문 · 설정) · SSE 전달, 작품 ID 검증 · 카드 정보 채우기 · 서재 제외, 미성년자 · 19금 설정 반영, 사용자 맥락 내부 API · 서비스 토큰, 작품 적재 때 색인 요청, 스트리밍 동안 DB 커넥션 안 잡기 |
 | 앱 | AI 검색 화면 · 진입 경로(홈 플로팅 버튼 · 검색 상세), 카테고리 선택 · 예시 질문, POST 스트리밍 수신 · 카드 5개 · 오류 화면, 지난 대화 목록 · 19금 추천 설정 |
 | 평가 · 출시 조건 | Recall@10 · 추천 Precision, 조건 추출 정확도, 성인 노출 0건 · 범위 밖 차단, 응답 시간 · 답변당 비용, 사용 데이터 · 외부 전송 항목 문서화 |
 
