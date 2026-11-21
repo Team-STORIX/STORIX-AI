@@ -20,8 +20,10 @@ Claude Code · Codex 같은 AI 도구가 같이 읽는 규칙 원본이다. `CLA
 | 의존성 설치 | `uv sync` |
 | 테스트 | `uv run pytest` |
 | 계약 JSON Schema 다시 만들기 | `uv run python -m schemas.export` |
+| 로컬 서버 | `cp .env.example .env` 후 토큰을 채우고 `uv run uvicorn serving.main:app --reload --port 8090` |
 
-FastAPI 실행 · 평가 명령은 AI-01a · EV-03 때 추가한다.
+- `/health` 만 열려 있고 `/internal/**` 는 `X-Internal-Token` 헤더가 맞아야 한다. API 문서 화면은 끈다
+- 평가 명령은 EV-03 때 추가한다
 
 ## 폴더
 
