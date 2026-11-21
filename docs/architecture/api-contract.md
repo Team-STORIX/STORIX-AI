@@ -27,14 +27,17 @@ STORIX-AI/
 
 | 구분 | API | 설명 |
 | --- | --- | --- |
-| 앱 → Spring | `POST /api/v1/ai-search/chats` | 대화방 만들기. 온보딩을 안 봤으면 온보딩을 같이 내려줌 |
-| 앱 → Spring | `POST /api/v1/ai-search/chats/{chatId}/messages` | 질문 보내기. SSE 응답 |
-| 앱 → Spring | `GET /api/v1/ai-search/chats/{chatId}/messages` | 지난 대화 보기 (UI 는 전부 보여 줌) |
-| 앱 → Spring | `GET · PUT /api/v1/ai-search/settings` | 챗봇 설정 (19금 추천 on/off · 기본 작품 유형) |
-| 앱 → Spring | `GET /api/v1/ai-search/examples` | 예시 질문 |
+| 앱 → Spring | `GET /api/v1/ai/chat` | 진입. 온보딩을 볼 차례면 멘트 · 선택지 · 19금 질문 노출 여부, 예시 질문 |
+| 앱 → Spring | `GET /api/v1/ai/chat/messages?before=&size=` | 지난 대화 보기. 위로 스크롤하며 이어 불러옴 (UI 는 전부 보여 줌) |
+| 앱 → Spring | `POST /api/v1/ai/chat/messages` | 질문 보내기. SSE 응답 |
+| 앱 → Spring | `GET · PUT /api/v1/ai/chat/settings` | 챗봇 설정 (19금 추천 on/off · 작품 유형). 온보딩 ④ 도 이 API 로 저장 |
 | Spring → AI | `POST /internal/search/stream` | 질문 · 대화 맥락 · 사용자 설정 전달, SSE 응답 |
 | Spring → AI | `POST /internal/index/works` | 작품 증분 색인 · 삭제 |
 | AI → Spring | `GET /internal/users/{userId}/context` | 취향 장르 · 해시태그, 서재 · 관심작품 ID |
+
+- 대화방은 사용자당 하나다. 앱은 대화방 ID 를 몰라도 되고, 대화방은 온보딩 저장이나 첫 질문 때 서버가 만든다
+- 앱 API 는 `/api/v1/ai/` 아래에 둔다. 다른 AI 기능이 생기면 같은 곳에 붙인다
+- 사용 횟수 제한은 MVP 에 없다. 응답에 남은 횟수도 넣지 않는다
 
 ## 3. SSE 이벤트
 
@@ -57,7 +60,7 @@ event: works
 data: {"recommendedWorks":[{"rank":1,"workId":123,"title":"…","thumbnailUrl":"…","platform":"카카오페이지","matchedClues":[{"text":"은발 보라 눈 유아","source":"COVER"}]}],"pipelineVersion":"v1.0"}
 
 event: done
-data: {"chatId":12,"messageId":31,"status":"OK"}
+data: {"messageId":31,"status":"OK"}
 ```
 
 | 이벤트 | 앱에서 할 일 |
@@ -74,7 +77,7 @@ data: {"chatId":12,"messageId":31,"status":"OK"}
 | 이벤트 | AI → Spring | Spring → 앱 |
 | --- | --- | --- |
 | works | `workId` · `reason` · `matchedClues` + 검증용 `candidateWorkIds` | `candidateWorkIds` 를 빼고 제목 · 표지 · 플랫폼을 채움 |
-| done | `status` · 모델별 토큰 `usage` · `elapsedMs` | `chatId` · `messageId` · `status`. 토큰 · 시간은 Spring 이 지표로 기록 |
+| done | `status` · 모델별 토큰 `usage` · `elapsedMs` | `messageId` · `status`. 토큰 · 시간은 Spring 이 지표로 기록 |
 | error | `code` (TIMEOUT · LLM_UNAVAILABLE · SEARCH_UNAVAILABLE · INVALID_REQUEST · INTERNAL) · `message` | 사용자용 문구로 바꿔 전달 |
 - `messageId` · `pipelineVersion` · `rank` 는 GA 이벤트와 서버 기록을 이어 붙이는 키
 
@@ -103,7 +106,7 @@ data: {"chatId":12,"messageId":31,"status":"OK"}
 
 - 앱이 모르는 status 를 받으면 text 대화로 보여 준다. 서버가 상태를 늘려도 앱 업데이트 없이 동작하게
 - 작품 질문인지 · 특정 작품을 찾는 질문인지는 ① 조건 추출(AI-06)에서 같이 판단한다
-- 앱이 받는 `done` 에도 `status` 를 넣어 화면을 고른다 (`{"chatId":12,"messageId":31,"status":"OK"}`)
+- 앱이 받는 `done` 에도 `status` 를 넣어 화면을 고른다 (`{"messageId":31,"status":"OK"}`)
 - `matchedClues.source` 는 단서가 어디서 왔는지 (COVER, DESCRIPTION, REVIEW 등). 기획서의 "일치 단서의 출처 표기 방식" 논의와 연결
 - 온보딩 멘트와 선택 결과는 UI 대화 기록에 `type: ONBOARDING` 으로 남김 ([onboarding.md](../plan/onboarding.md))
 
