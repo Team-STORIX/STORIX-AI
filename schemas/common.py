@@ -4,6 +4,7 @@ from enum import StrEnum
 class WorkType(StrEnum):
     WEBTOON = "WEBTOON"
     WEBNOVEL = "WEBNOVEL"
+    COMIC = "COMIC"
     BOOK = "BOOK"
 
 

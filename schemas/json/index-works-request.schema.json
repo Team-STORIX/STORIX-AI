@@ -61,6 +61,7 @@
       "enum": [
         "WEBTOON",
         "WEBNOVEL",
+        "COMIC",
         "BOOK"
       ],
       "title": "WorkType",
