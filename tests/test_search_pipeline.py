@@ -15,7 +15,7 @@ from serving.pipeline.state import Candidate
 
 SETTINGS = Settings(internal_token="t", pipeline_version="v-test", answer_timeout_seconds=0.5)
 REQUEST = SearchStreamRequest(chat_id=1, message_id=2, user_id=3, question="계약결혼 로판",
-                              policy=SearchPolicy(adult_allowed=False))
+                              policy=SearchPolicy(adult_default=False, adult_verified=False))
 CANDIDATES = [Candidate(work_id=i, title=f"작품{i}", works_type="WEBTOON") for i in range(1, 8)]
 
 

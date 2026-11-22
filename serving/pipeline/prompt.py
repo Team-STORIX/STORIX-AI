@@ -33,7 +33,8 @@ def recommend_tool() -> dict:
 def _candidate_line(candidate: Candidate) -> str:
     tags = ", ".join(candidate.tags) if candidate.tags else "-"
     genre = candidate.genre or "-"
-    return (f"- workId={candidate.work_id} | {candidate.title} | {candidate.works_type} | 장르 {genre} | "
+    adult = " | 19금" if candidate.adult else ""
+    return (f"- workId={candidate.work_id} | {candidate.title} | {candidate.works_type} | 장르 {genre}{adult} | "
             f"태그 {tags}\n  {candidate.description.strip()}")
 
 
@@ -43,7 +44,9 @@ def user_turn(question: str, candidates: list[Candidate], context: ChatContext, 
         lines += ["", f"[이미 보여 준 작품] {', '.join(map(str, context.shown_work_ids))} — 다시 추천하지 마"]
     if context.conditions:
         lines += ["", f"[사용자가 붙인 조건] {' / '.join(context.conditions)}"]
-    if not policy.adult_allowed:
-        lines += ["", "[정책] 19세 이상 작품은 후보에서 이미 뺐다. 19금을 요청하면 설정에서 켤 수 있다고만 안내해"]
+    if not policy.adult_verified:
+        lines += ["", "[정책] 사용자는 성인 인증 전이라 19금 작품 표지가 가려져 보인다. "
+                      "19금 작품 표지를 보여 달라거나 묘사해 달라고 하면 성인 인증 후 볼 수 있다고만 안내하고, "
+                      "표지 내용은 말하지 마"]
     lines += ["", "[질문]", question]
     return "\n".join(lines)

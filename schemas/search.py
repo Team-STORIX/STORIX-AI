@@ -9,7 +9,12 @@ from schemas.common import WorkType
 class SearchPolicy(ContractModel):
     """Spring 이 매 질문마다 확인해서 넘기는 정책값. AI 서버는 바꾸지 않는다."""
 
-    adult_allowed: bool = Field(description="설정 켜짐 + 지금 성인 인증 유효일 때만 true")
+    adult_default: bool = Field(
+        description="챗봇 설정의 19금 추천. 질문 · 대화에 19금 조건이 없을 때만 쓴다. 성인 인증이 풀리면 false"
+    )
+    adult_verified: bool = Field(
+        description="지금 성인 인증 유효. false 면 Spring 이 19금 카드 표지를 가린다. AI 는 표지를 말로 풀지 않는다"
+    )
     work_types: list[WorkType] = Field(
         default_factory=list, description="챗봇 설정의 작품 유형. 비어 있으면 상관없음"
     )
