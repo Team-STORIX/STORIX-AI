@@ -64,7 +64,7 @@ sequenceDiagram
 - 스트림 시작 전에 DTO 로 다 바꿔 둠. 지연 로딩 필드를 건드리면 LazyInitializationException
 - ④ 저장은 다른 스레드에서 돌아서 Service 빈의 @Transactional 메서드를 호출해야 프록시가 적용됨 (자기 메서드 호출 X)
 - 화면을 닫거나 FastAPI 오류가 나도 ④ 가 돌도록 완료 · 오류 · 타임아웃 콜백 전부 연결. 사용 횟수를 미리 차감했다면 실패 시 되돌릴지 결정 필요
-- 새로 필요한 것: spring-boot-starter-webflux(MVC 위에서 WebClient 만), `spring.mvc.async.request-timeout`
+- 구현(BE#460): webflux 없이 OpenFeign 이 응답을 `feign.Response` 로 받아 본문을 줄 단위로 읽음. 스트림은 별도 실행기 스레드에서 돌려 요청 스레드 · DB 커넥션을 잡지 않음
 
 ## 4. 사용자 데이터 접근
 
@@ -100,7 +100,7 @@ sequenceDiagram
 
 - 일반 HTTP 라 프록시 · CDN 을 그대로 통과하고 세션 관리가 필요 없음
 - Claude 스트리밍도 SSE(message_start, content_block_delta, ping, message_stop 등). FastAPI 가 STORIX SSE 로 바꿔 내보냄: text_delta → `token`, ping → heartbeat, message_stop → `done`
-- FastAPI 는 StreamingResponse, Spring 은 WebClient 로 `Flux<ServerSentEvent>` 를 받아 SseEmitter 또는 Flux 로 앱에 전달하면서 works 의 workId 검증, 끝나면 대화 저장
+- FastAPI 는 StreamingResponse, Spring 은 OpenFeign 으로 받은 SSE 를 줄 단위로 읽어 SseEmitter 로 앱에 전달하면서 works 의 workId 검증, 끝나면 대화 저장
 - 앱은 EventSource 가 GET 만 돼서 POST 스트림(fetch 스트리밍 · SSE 라이브러리) 사용
 - 함정: Caddy 버퍼링 끄기, `Content-Type: text/event-stream` · `Cache-Control: no-cache`, Spring → Python · CDN 타임아웃 대비 heartbeat
 - 글 먼저 → 작품 나중. 이벤트 하나 = event 줄 + data 줄 + 빈 줄
@@ -170,7 +170,7 @@ prompts/
 - 꼭 저장할 것
   - 이미 보여 준 작품 ID: "아까 두 번째 거", "그거 말고", 중복 추천 방지
   - 사용자가 붙인 조건: "완결작만", "19금 빼고"는 요약하면 사라지기 쉬워서 구조화
-- 저장 위치: 진행 중 대화는 Redis + TTL, 장기 취향은 DB (LangGraph 라면 checkpointer 와 store)
+- 저장 위치: MVP 는 대화 기록(MySQL)에서 질문마다 최근 25개를 읽어 넘김 (Redis 캐시 없음). 장기 취향은 DB (LangGraph 라면 checkpointer 와 store)
 - 대화 기록은 앞에서부터 쌓이는 구조라 프롬프트 캐싱과 잘 맞음
 
 ---
