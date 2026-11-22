@@ -18,15 +18,15 @@
 | 영역 | 기술 | 비고 |
 | --- | --- | --- |
 | 앱 | 기존 STORIX 앱 | AI 검색 화면, POST 스트리밍(SSE) 수신 |
-| 백엔드 | Java 17 · Spring Boot 3.5 (STORIX-BE) | 인증 · 사용 횟수 · 대화 저장 · 결과 검증. AI 서버 호출은 WebClient |
+| 백엔드 | Java 17 · Spring Boot 3.5 (STORIX-BE) | 인증 · 사용 횟수 · 대화 저장 · 결과 검증. AI 서버 호출은 OpenFeign, SSE 는 응답 본문을 줄 단위로 읽음 |
 | AI 서버 | Python 3.12 · FastAPI · uvicorn · Pydantic | 패키지는 uv, 테스트는 pytest |
 | LLM | Claude Haiku (조건 추출 · 분류) + Claude Sonnet (답변) | Anthropic Python SDK. tool use 로 작품 ID 만 받음, 프롬프트 캐싱 |
 | 임베딩 | 한국어 지원 임베딩 모델 1개 (미정) | 후보: bge-m3 · multilingual-e5 계열(로컬, 0원) 또는 유료 API. 서버 메모리에 들어가는 크기로 결정 |
 | 검색 | Elasticsearch 8.18 (기존, nori) | `dense_vector` kNN + BM25 하이브리드, 필터 |
-| 저장소 | MySQL(RDS) · Redis (기존) | 대화 기록 · 설정은 MySQL, 진행 중 대화 캐시는 Redis |
+| 저장소 | MySQL(RDS) (기존) | 대화 기록 · 설정 · AI 서버에 넘기는 최근 대화 모두 MySQL. 대화 캐시용 Redis 는 MVP 에서 쓰지 않음 |
 | 색인 배치 | Python 스크립트 (`indexing/`) | 작품 적재 시 바로 색인. v2 부터 표지 라벨용 로컬 VLM |
 | 배포 | Docker · GitHub Actions · ECR (기존 방식) | 앱 서버 내부 네트워크에만 붙임. 인터넷에 열지 않음 |
-| 모니터링 | Prometheus · Grafana · Loki (기존) | 응답 시간, 답변당 토큰 · 비용, 오류율 |
+| 모니터링 | Grafana Cloud (지표 · 로그 · 알림), Alloy 로 수집 | 응답 시간, 답변당 토큰 · 비용, 오류율. dev 부터 옮김 |
 
 ## 3. 레포 · 데이터
 
@@ -55,9 +55,8 @@ STORIX-BE 추가분
 | 저장 위치 | 내용 |
 | --- | --- |
 | MySQL `ai_chats` | 대화방. 사용자당 하나, 만든 시각, 마지막 사용 시각 |
-| MySQL `ai_chat_messages` | 질문 · 답변 · 온보딩 기록, 추천 작품(순위 · ID · 이유 · 단서), `pipeline_version`. 토큰 수 · 응답 시간은 지표로만 |
+| MySQL `ai_chat_messages` | 질문 · 답변 · 온보딩 기록, 추천 작품(순위 · ID · 이유 · 단서), `pipeline_version`. 토큰 수 · 응답 시간은 지표로만. 질문마다 직전 25개(온보딩 · 오류 답변 제외)와 보여 준 작품 ID 를 여기서 읽어 AI 서버에 넘김 |
 | MySQL `ai_chat_settings` | 19금 추천 on/off, 작품 유형, 본 온보딩 버전 |
-| Redis | 진행 중 대화 최근 25개, 이미 보여 준 작품 ID, 사용자가 붙인 조건 |
 | Elasticsearch `works_ai` (별칭) | 작품별 embed_text · 벡터 · 필터 값. 모델을 바꿀 땐 새 인덱스를 다 채운 뒤 별칭만 교체 |
 
 MVP 에서 실제로 쓰는 데이터는 [mvp-data.md](mvp-data.md)
@@ -232,4 +231,4 @@ v2 에서도 약한 질문: "그림체 예쁜" · "파스텔톤"(3단계 SigLIP)
 
 작성자 : 이수아
 
-업데이트 날짜 : 2026-11-20
+업데이트 날짜 : 2026-11-22
