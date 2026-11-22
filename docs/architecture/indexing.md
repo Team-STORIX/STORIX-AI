@@ -67,7 +67,7 @@ VLM 이 표지를 보고 뽑는 라벨 예시
 | 구분 | 할 일 |
 | --- | --- |
 | 앞단 | embed_text 설계(설명이 길면 표지 특징이 묻히고, 태그만 넣으면 분위기를 못 잡음), 작품당 벡터 1개 vs 여러 개(설명용 · 표지용 · 리뷰용), 긴 글 쪼개기, 스포일러 · 욕설 · 정보 없는 리뷰 제거 |
-| 뒷단 | 하이브리드 검색(벡터는 제목 · 작가명 같은 정확한 단어에 약해서 BM25 와 섞음), 필터(완결 · 플랫폼 · 성인 제외), 재순위(로컬 모델 가능), 새 작품 · 리뷰만 다시 임베딩하는 증분 처리 |
+| 뒷단 | 하이브리드 검색(벡터는 제목 · 작가명 같은 정확한 단어에 약해서 BM25 와 섞음), 필터(플랫폼 · 성인 제외), 재순위(로컬 모델 가능), 새 작품 · 리뷰만 다시 임베딩하는 증분 처리 |
 | 평가 | 선택지마다 좋아졌는지는 평가 세트(질문 → 정답 작품)로 확인 |
 
 ## 5. VLM 라벨 vs SigLIP
@@ -105,8 +105,7 @@ PUT works_ai_v1
       "work_id":      { "type": "long" },
       "title":        { "type": "text" },
       "embed_text":   { "type": "text" },
-      "platform":     { "type": "keyword" },
-      "completed":    { "type": "boolean" },
+      "platforms":    { "type": "keyword" },
       "adult":        { "type": "boolean" },
       "text_vector":  { "type": "dense_vector", "dims": 1024, "index": true, "similarity": "cosine" },
       "image_vector": { "type": "dense_vector", "dims": 768,  "index": true, "similarity": "cosine" }
@@ -144,7 +143,7 @@ POST works_ai/_search
 ```
 
 - `dims` 는 실제 모델 크기에 맞춤 (bge-m3 는 1024)
-- `platform` · `completed` · `adult` 는 필터용. embed_text 를 text 로도 넣어 BM25 하이브리드
+- `platforms` · `adult` 는 필터용. 완결 · 연재 여부는 작품 DB 에 없어 넣지 않는다. embed_text 를 text 로도 넣어 BM25 하이브리드
 - `_id` = `work_id` 로 두면 같은 작품은 덮어써서 증분 반영이 쉬움
 - 모델 교체는 별칭으로: `works_ai_v2` 를 다 채운 뒤 `works_ai` 가 가리키는 대상만 교체
 - 인덱스는 환경(dev · prod)마다 따로 만들어서 환경 간 작품 ID 차이와 무관
@@ -174,4 +173,4 @@ POST works_ai/_search
 
 작성자 : 이수아
 
-업데이트 날짜 : 2026-11-20
+업데이트 날짜 : 2026-11-22

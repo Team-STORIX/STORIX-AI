@@ -43,8 +43,8 @@
 | AI-04b | 작품 DB → embed_text 규칙 (설명 · 태그 · 장르 조합) | MVP | 이채연 | AI-03a | |
 | AI-04c | 전체 색인 스크립트 (embed_text → 벡터 → ES 적재) | MVP | 이채연 | AI-04a · 04b | |
 | AI-05 | 증분 색인 · 삭제 API (`/internal/index/works`). 색인 로직은 AI-04c 함수 호출 | MVP | 이수아 | AI-04c | |
-| AI-06 | ① 조건 추출: Haiku tool use 로 작품 유형 · 장르 · 완결 · 범위 밖 여부 | MVP | 이채연 | AI-02 | |
-| AI-07a | ② 필터 (19금 · 유형 · 완결 · 서재). 19금 · 서재 값은 Spring 이 넘긴 값만 | MVP | 이채연 | AI-04a | |
+| AI-06 | ① 조건 추출: Haiku tool use 로 작품 유형 · 장르 · 범위 밖 여부 | MVP | 이채연 | AI-02 | |
+| AI-07a | ② 필터 (19금 · 유형 · 서재). 19금 · 서재 값은 Spring 이 넘긴 값만 | MVP | 이채연 | AI-04a | |
 | AI-07b | ③ 벡터 · 키워드 하이브리드 쿼리, RRF | MVP | 이채연 | AI-04c | |
 | AI-08a | ⑦ Sonnet 스트리밍 호출, 도구 입력 조각 모으기 · 파싱, 끊김 · 타임아웃 처리 | MVP | 이수아 | AI-02 | ✅ [#16](https://github.com/Team-STORIX/STORIX-AI/pull/16) |
 | AI-08b | ⑦ 5개 고르는 규칙, `recommend_works` 도구 스키마(작품 ID · 추천 이유 · 일치 단서), 답변 품질. 스키마는 같이, 규칙 · 품질은 이채연 | MVP | 이채연 · 이수아 | AI-07b · AI-09a | 🟡 [#16](https://github.com/Team-STORIX/STORIX-AI/pull/16) 도구 스키마 초안 |

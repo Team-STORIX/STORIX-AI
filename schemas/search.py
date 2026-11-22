@@ -32,7 +32,7 @@ class ChatContext(ContractModel):
         default_factory=list, description="이 대화방에서 이미 보여 준 작품"
     )
     conditions: list[str] = Field(
-        default_factory=list, description='사용자가 붙인 조건. 예: "완결작만"'
+        default_factory=list, description='사용자가 붙인 조건. 예: "웹툰만", "19금 빼고"'
     )
 
 
