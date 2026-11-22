@@ -21,7 +21,7 @@
           "type": "array"
         },
         "conditions": {
-          "description": "사용자가 붙인 조건. 예: \"완결작만\"",
+          "description": "사용자가 붙인 조건. 예: \"웹툰만\", \"19금 빼고\"",
           "items": {
             "type": "string"
           },

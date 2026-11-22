@@ -33,13 +33,13 @@
         "workType": {
           "$ref": "#/$defs/WorkType"
         },
-        "platform": {
-          "title": "Platform",
-          "type": "string"
-        },
-        "completed": {
-          "title": "Completed",
-          "type": "boolean"
+        "platforms": {
+          "description": "연재 플랫폼. 작품 하나가 여러 곳에 있을 수 있다",
+          "items": {
+            "type": "string"
+          },
+          "title": "Platforms",
+          "type": "array"
         },
         "adult": {
           "title": "Adult",
@@ -50,8 +50,6 @@
         "workId",
         "title",
         "workType",
-        "platform",
-        "completed",
         "adult"
       ],
       "title": "IndexWork",

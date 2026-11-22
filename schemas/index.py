@@ -11,8 +11,7 @@ class IndexWork(ContractModel):
     tags: list[str] = Field(default_factory=list)
     genres: list[str] = Field(default_factory=list)
     work_type: WorkType
-    platform: str
-    completed: bool
+    platforms: list[str] = Field(default_factory=list, description="연재 플랫폼. 작품 하나가 여러 곳에 있을 수 있다")
     adult: bool
 
 
