@@ -85,7 +85,7 @@ def test_stream_yields_text_then_done_and_sends_expected_request():
     async def collect():
         return [item async for item in answerer.stream(
             "계약결혼 로판", [Candidate(work_id=3, title="작품", works_type="WEBTOON")],
-            ChatContext(), SearchPolicy(adult_allowed=False))]
+            ChatContext(), SearchPolicy(adult_default=False, adult_verified=False))]
 
     items = asyncio.run(collect())
 
@@ -104,4 +104,4 @@ def test_stream_yields_text_then_done_and_sends_expected_request():
     assert kwargs["system"][0]["cache_control"] == {"type": "ephemeral"}
     assert kwargs["messages"][-1]["role"] == "user"
     assert "workId=3" in kwargs["messages"][-1]["content"]
-    assert "19세 이상" in kwargs["messages"][-1]["content"]
+    assert "성인 인증 전" in kwargs["messages"][-1]["content"]

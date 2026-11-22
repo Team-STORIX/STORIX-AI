@@ -9,6 +9,7 @@ from pathlib import Path
 from pydantic import BaseModel, TypeAdapter
 
 from schemas.eval import EvalReport
+from schemas.eval_policy import PolicyCase
 from schemas.events import SearchEvent
 from schemas.index import IndexedWork, IndexWorksRequest, IndexWorksResponse
 from schemas.search import SearchStreamRequest
@@ -26,6 +27,7 @@ TARGETS: dict[str, type[BaseModel] | TypeAdapter] = {
     "indexed-work": IndexedWork,
     "user-context": UserContext,
     "eval-report": EvalReport,
+    "policy-case": PolicyCase,
 }
 
 

@@ -15,6 +15,7 @@ class Candidate:
     genre: str | None = None
     description: str = ""
     tags: tuple[str, ...] = field(default_factory=tuple)
+    adult: bool = False
 
 
 @dataclass

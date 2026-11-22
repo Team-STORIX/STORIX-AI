@@ -1,0 +1,222 @@
+{
+  "$defs": {
+    "ChatContext": {
+      "additionalProperties": false,
+      "description": "대화방 단위 맥락. 최근 25턴까지.",
+      "properties": {
+        "turns": {
+          "items": {
+            "$ref": "#/$defs/ChatTurn"
+          },
+          "maxItems": 25,
+          "title": "Turns",
+          "type": "array"
+        },
+        "shownWorkIds": {
+          "description": "이 대화방에서 이미 보여 준 작품",
+          "items": {
+            "type": "integer"
+          },
+          "title": "Shownworkids",
+          "type": "array"
+        },
+        "conditions": {
+          "description": "사용자가 붙인 조건. 예: \"웹툰만\", \"19금 빼고\"",
+          "items": {
+            "type": "string"
+          },
+          "title": "Conditions",
+          "type": "array"
+        }
+      },
+      "title": "ChatContext",
+      "type": "object"
+    },
+    "ChatTurn": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "pattern": "^(user|assistant)$",
+          "title": "Role",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "workIds": {
+          "description": "이 턴에 보여 준 작품",
+          "items": {
+            "type": "integer"
+          },
+          "title": "Workids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "role",
+        "text"
+      ],
+      "title": "ChatTurn",
+      "type": "object"
+    },
+    "PolicyCategory": {
+      "enum": [
+        "OUT_OF_SCOPE",
+        "PROMPT_INJECTION",
+        "ADULT_CONTENT",
+        "HALLUCINATION_BAIT",
+        "SENSITIVE"
+      ],
+      "title": "PolicyCategory",
+      "type": "string"
+    },
+    "PolicyExpectation": {
+      "additionalProperties": false,
+      "properties": {
+        "statuses": {
+          "description": "이 중 하나면 통과",
+          "items": {
+            "$ref": "#/$defs/ResultStatus"
+          },
+          "minItems": 1,
+          "title": "Statuses",
+          "type": "array"
+        },
+        "maxWorks": {
+          "description": "추천 카드 최대 개수",
+          "maximum": 5,
+          "minimum": 0,
+          "title": "Maxworks",
+          "type": "integer"
+        },
+        "adult": {
+          "default": false,
+          "description": "19금 작품이 카드에 나와도 되는지. 질문 조건 → 없으면 설정으로 정한 기대값",
+          "title": "Adult",
+          "type": "boolean"
+        },
+        "mustNotSay": {
+          "description": "답변에 나오면 안 되는 말. 시스템 프롬프트 조각 · 지어낸 작품명 등",
+          "items": {
+            "type": "string"
+          },
+          "title": "Mustnotsay",
+          "type": "array"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "사람이 볼 때 참고할 기대 동작",
+          "title": "Note"
+        }
+      },
+      "required": [
+        "statuses",
+        "maxWorks"
+      ],
+      "title": "PolicyExpectation",
+      "type": "object"
+    },
+    "ResultStatus": {
+      "enum": [
+        "OK",
+        "NO_RESULT",
+        "WORK_NOT_FOUND",
+        "OFF_TOPIC"
+      ],
+      "title": "ResultStatus",
+      "type": "string"
+    },
+    "SearchPolicy": {
+      "additionalProperties": false,
+      "description": "Spring 이 매 질문마다 확인해서 넘기는 정책값. AI 서버는 바꾸지 않는다.",
+      "properties": {
+        "adultDefault": {
+          "description": "챗봇 설정의 19금 추천. 질문 · 대화에 19금 조건이 없을 때만 쓴다. 성인 인증이 풀리면 false",
+          "title": "Adultdefault",
+          "type": "boolean"
+        },
+        "adultVerified": {
+          "description": "지금 성인 인증 유효. false 면 Spring 이 19금 카드 표지를 가린다. AI 는 표지를 말로 풀지 않는다",
+          "title": "Adultverified",
+          "type": "boolean"
+        },
+        "workTypes": {
+          "description": "챗봇 설정의 작품 유형. 비어 있으면 상관없음",
+          "items": {
+            "$ref": "#/$defs/WorkType"
+          },
+          "title": "Worktypes",
+          "type": "array"
+        },
+        "excludedWorkIds": {
+          "description": "서재에 있는 작품. 추천에서 뺀다",
+          "items": {
+            "type": "integer"
+          },
+          "title": "Excludedworkids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "adultDefault",
+        "adultVerified"
+      ],
+      "title": "SearchPolicy",
+      "type": "object"
+    },
+    "WorkType": {
+      "enum": [
+        "WEBTOON",
+        "WEBNOVEL",
+        "COMIC",
+        "BOOK"
+      ],
+      "title": "WorkType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "정책 질문 한 건. eval/datasets/ 의 jsonl 한 줄. 원본은 커밋하지 않는다.",
+  "properties": {
+    "questionId": {
+      "title": "Questionid",
+      "type": "string"
+    },
+    "category": {
+      "$ref": "#/$defs/PolicyCategory"
+    },
+    "question": {
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Question",
+      "type": "string"
+    },
+    "policy": {
+      "$ref": "#/$defs/SearchPolicy"
+    },
+    "context": {
+      "$ref": "#/$defs/ChatContext"
+    },
+    "expect": {
+      "$ref": "#/$defs/PolicyExpectation"
+    }
+  },
+  "required": [
+    "questionId",
+    "category",
+    "question",
+    "policy",
+    "expect"
+  ],
+  "title": "PolicyCase",
+  "type": "object"
+}

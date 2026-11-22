@@ -47,7 +47,7 @@
 | `AgeClassification` | `ALL` 전체연령가 · `AGE_12` · `AGE_15` · `AGE_18` |
 | `Platform` | `NAVER_WEBTOON` · `KAKAO_PAGE` · `RIDIBOOKS` · `BOMTOON` · `NAVER_SERIES` · `LEZHIN` · `MRBLUE` |
 
-- **성인 작품** = `age_classification = AGE_18` 만. 계약의 `adult` 는 이 값으로 채운다
+- **성인 작품** = `age_classification = AGE_18` 만. 계약의 `adult` 는 이 값으로 채운다. 성인 인증 전 사용자에게도 목록에는 나오고 표지만 가린다 (`SlicedWorksInfo.maskIfAdult`)
 - 챗봇 설정에서 고를 수 있는 작품 유형은 웹툰 · 웹소설 · 단행본. 만화(`COMIC`)는 작품 DB 에는 있지만 설정에서 못 고른다
 - 장르는 작품당 하나다. 계약의 `genres` 는 목록이지만 지금은 값이 하나만 들어간다
 
@@ -63,7 +63,7 @@
 ## 4. 사용자 쪽 (AI 서버는 직접 안 읽음)
 
 - 취향 장르 · 해시태그, 서재(리뷰한 작품) · 관심작품 ID 는 Spring 내부 API `GET /internal/ai/users/{userId}/context` 로 받는다 ([api-contract.md](api-contract.md))
-- 19금 허용 · 작품 유형 · 서재 작품 ID · 최근 대화는 질문마다 Spring 이 `SearchStreamRequest` 에 넣어 보낸다
+- 19금 설정 · 성인 인증 여부 · 작품 유형 · 서재 작품 ID · 최근 대화는 질문마다 Spring 이 `SearchStreamRequest` 에 넣어 보낸다
 - 대화 기록 · 챗봇 설정(`ai_chats` · `ai_chat_messages` · `ai_chat_settings`) 은 Spring 만 읽고 쓴다
 
 ---
