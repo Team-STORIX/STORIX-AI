@@ -2,7 +2,7 @@
 
 from schemas.search import ChatContext, SearchPolicy
 from schemas.tools import RecommendWorksInput
-from serving.pipeline.candidates import Candidate
+from serving.pipeline.state import Candidate
 
 RECOMMEND_TOOL_NAME = "recommend_works"
 

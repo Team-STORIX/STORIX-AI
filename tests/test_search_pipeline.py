@@ -7,10 +7,11 @@ import pytest
 from schemas.events import ErrorCode, ResultStatus
 from schemas.search import SearchPolicy, SearchStreamRequest
 from schemas.tools import RecommendClue, RecommendPick
-from serving.answer.claude_answer import AnswerDone, TextDelta
+from serving.pipeline.answer import AnswerDone, TextDelta
 from serving.config import Settings
-from serving.pipeline.candidates import Candidate, NotReadyCandidateFinder
-from serving.pipeline.search import run_search
+from serving.pipeline.run import run_search
+from serving.pipeline.search import NotReadyCandidateFinder
+from serving.pipeline.state import Candidate
 
 SETTINGS = Settings(internal_token="t", pipeline_version="v-test", answer_timeout_seconds=0.5)
 REQUEST = SearchStreamRequest(chat_id=1, message_id=2, user_id=3, question="계약결혼 로판",

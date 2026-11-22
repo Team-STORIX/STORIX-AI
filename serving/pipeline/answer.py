@@ -3,18 +3,22 @@
 import logging
 from collections.abc import AsyncIterator
 from dataclasses import dataclass, field
+from typing import Protocol
 
 import anthropic
 from pydantic import ValidationError
 
-from schemas.events import Usage
+from schemas.common import ClueSource
+from schemas.events import MatchedClue, RecommendedWork, Usage
 from schemas.search import ChatContext, SearchPolicy
 from schemas.tools import RecommendPick, RecommendWorksInput
-from serving.answer.prompt import RECOMMEND_TOOL_NAME, SYSTEM_PROMPT, recommend_tool, user_turn
+from serving.pipeline.prompt import RECOMMEND_TOOL_NAME, SYSTEM_PROMPT, recommend_tool, user_turn
 from serving.config import Settings
-from serving.pipeline.candidates import Candidate
+from serving.pipeline.state import Candidate
 
 log = logging.getLogger(__name__)
+
+MAX_WORKS = 5
 
 # 거절되면 같은 요청을 대체 모델이 이어서 처리한다 (거절 분류에 따라 서버가 고름)
 FALLBACK_BETA = "server-side-fallback-2026-07-01"
@@ -99,3 +103,28 @@ class ClaudeAnswerer:
             final = await stream.get_final_message()
 
         yield AnswerDone(picks=parse_picks(final), refused=final.stop_reason == "refusal", usage=usage_of(final))
+
+
+class Answerer(Protocol):
+    def stream(self, question: str, candidates: list[Candidate], context: ChatContext,
+               policy: SearchPolicy) -> AsyncIterator[TextDelta | AnswerDone]: ...
+
+
+def to_recommended(picks: list[RecommendPick], candidates: list[Candidate]) -> list[RecommendedWork]:
+    """후보 밖 작품 · 중복은 버리고 순서대로 최대 5개. 순위는 남은 순서로 다시 매긴다."""
+    allowed = {c.work_id for c in candidates}
+    seen: set[int] = set()
+    works: list[RecommendedWork] = []
+    for pick in picks:
+        if pick.work_id not in allowed or pick.work_id in seen:
+            continue
+        seen.add(pick.work_id)
+        works.append(RecommendedWork(
+            rank=len(works) + 1,
+            work_id=pick.work_id,
+            reason=pick.reason,
+            matched_clues=[MatchedClue(text=c.text, source=ClueSource(c.source)) for c in pick.matched_clues],
+        ))
+        if len(works) == MAX_WORKS:
+            break
+    return works
