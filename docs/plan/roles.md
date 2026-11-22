@@ -36,7 +36,7 @@
 | AI-01a | 레포 · FastAPI 뼈대 · 설정 · `/health` · 로컬 실행 방법 | 0단계 | 이수아 | - | ✅ [#8](https://github.com/Team-STORIX/STORIX-AI/pull/8) |
 | AI-01b | Docker 이미지 · CI · 서버 내부 네트워크 배포 | 0단계 | 이수아 | AI-01a | ✅ [#10](https://github.com/Team-STORIX/STORIX-AI/pull/10) · [#12](https://github.com/Team-STORIX/STORIX-AI/pull/12) · [BE#450](https://github.com/Team-STORIX/STORIX-BE-2.0/pull/450) |
 | AI-01c | 개발 하네스: AGENTS.md · 작업 규칙 · 테스트, `prompts/` · `serving/` 바뀐 PR 마다 평가 세트 일부 자동 실행 · PR 코멘트. 채점은 EV-03 호출 | 1단계 | 이수아 | AI-01b · EV-03 | |
-| AI-02 | `schemas/` 요청 · 응답 · SSE · 색인 결과 · 채점 결과 형식. 채점 형식은 이채연과 같이 | 0단계 | 이수아 | - | ✅ [#2](https://github.com/Team-STORIX/STORIX-AI/pull/2) · [#4](https://github.com/Team-STORIX/STORIX-AI/pull/4) |
+| AI-02 | `schemas/` 요청 · 응답 · SSE · 색인 결과 · 채점 결과 형식. 채점 형식은 이채연과 같이 | 0단계 | 이수아 | - | ✅ [#2](https://github.com/Team-STORIX/STORIX-AI/pull/2) · [#4](https://github.com/Team-STORIX/STORIX-AI/pull/4) · [#24](https://github.com/Team-STORIX/STORIX-AI/pull/24) 19금 정책값 나누기 |
 | AI-03a | 임베딩 모델 후보 2~3개 비교 (한국어 품질 · 메모리 · 속도) | 0단계 | 이채연 | EV-01a | |
 | AI-03b | 임베딩 모델 경량화 (양자화 · ONNX 등), 서버 메모리 · 속도 측정. 서버 4GB 안에서 질문 임베딩 | 1단계 | 이채연 | AI-03a | |
 | AI-04a | `works_ai` ES 매핑 (벡터 · 필터 필드 · nori). 필터 필드 이름은 AI-02 와 맞춤 | 1단계 | 이채연 | AI-03a | |
@@ -44,7 +44,7 @@
 | AI-04c | 전체 색인 스크립트 (embed_text → 벡터 → ES 적재) | 1단계 | 이채연 | AI-04a · 04b | |
 | AI-05 | 증분 색인 · 삭제 API (`/internal/index/works`). 색인 로직은 AI-04c 함수 호출 | 1단계 | 이수아 | AI-04c | |
 | AI-06 | ① 조건 추출: Haiku tool use 로 작품 유형 · 장르 · 범위 밖 여부 | 1단계 | 이채연 | AI-02 | |
-| AI-07a | ② 필터 (19금 · 유형 · 서재). 19금은 질문 조건 먼저, 없으면 Spring 이 넘긴 설정값. 서재는 Spring 값만 | 1단계 | 이채연 | AI-04a | |
+| AI-07a | ② 필터 (19금 · 유형 · 서재). 19금은 질문 조건 먼저, 없으면 Spring 이 넘긴 설정값. 서재는 Spring 값만 | 1단계 | 이채연 | AI-04a | [#24](https://github.com/Team-STORIX/STORIX-AI/pull/24) 19금 포함 규칙 함수만 |
 | AI-07b | ③ 벡터 · 키워드 하이브리드 쿼리, RRF | 1단계 | 이채연 | AI-04c | |
 | AI-08a | ⑦ Sonnet 스트리밍 호출, 도구 입력 조각 모으기 · 파싱, 끊김 · 타임아웃 처리 | 1단계 | 이수아 | AI-02 | ✅ [#16](https://github.com/Team-STORIX/STORIX-AI/pull/16) |
 | AI-08b | ⑦ 5개 고르는 규칙, `recommend_works` 도구 스키마(작품 ID · 추천 이유 · 일치 단서), 답변 품질. 스키마는 같이, 규칙 · 품질은 이채연 | 1단계 | 이채연 · 이수아 | AI-07b · AI-09a | 🟡 [#16](https://github.com/Team-STORIX/STORIX-AI/pull/16) 도구 스키마 초안 |
@@ -83,7 +83,7 @@
 | EV-01a | 질문 작성 50~100개, 질문 유형 태그 (장르 · 외형 · 독자 평가 등). 생성형 AI 로 초안 | 0단계 | 이채연 | - | |
 | EV-01b | 질문마다 정답 작품 표시 | 0단계 | 이채연 | EV-01a | |
 | EV-01c | 질문 · 정답 검수 (기획 · 작품 잘 아는 사람) | 0단계 | 이채연 | EV-01b | |
-| EV-02 | 범위 밖 · 프롬프트 인젝션 · 19금 처리 질문 세트와 결과 분석 | 0단계 | 이수아 | - | |
+| EV-02 | 범위 밖 · 프롬프트 인젝션 · 19금 처리 질문 세트와 결과 분석 | 0단계 | 이수아 | - | 🟡 [#24](https://github.com/Team-STORIX/STORIX-AI/pull/24) 형식 · 채점 기준, 실제 채점은 검색 붙은 뒤 |
 | EV-03 | Recall@10 · Precision@5 · 후보 밖 비율 · 성인 노출 채점 스크립트. CLI, 결과 JSON | 1단계 | 이채연 | EV-01c | |
 | EV-04a | 검색 쪽: MVP 출시 기준 측정, v2 비교표 | 1단계 · 2단계 | 이채연 | EV-03 | |
 | EV-04b | 답변 · 정책 쪽: 실패 원인 분류(검색 누락 · 지어냄 · 정책 위반 · 말투)와 개선 우선순위 | 1단계 · 2단계 | 이수아 | EV-03 · EV-02 | |
