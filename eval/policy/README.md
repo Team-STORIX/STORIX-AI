@@ -3,7 +3,7 @@
 작품 추천과 상관없는 질문, 규칙을 깨려는 질문에 AI 가 정책대로 답하는지 본다. 정답 작품을 맞히는 평가(EV-01)와 따로 돈다.
 
 질문 원본은 커밋하지 않는다. 공개 레포에 올리면 프롬프트를 그 질문에만 맞추게 되고, 인젝션 질문 목록도 그대로 공개된다.
-여기에는 형식과 채점 기준만 두고, 원본은 `eval/datasets/policy-questions.jsonl` 에 둔다 (`.gitignore` 대상). STORIX-AI-Hub 가 생기면 그쪽으로 옮긴다.
+여기에는 형식과 채점 기준만 두고, 원본은 비공개 STORIX-AI-Hub 가 날짜 · 해시 팩으로 보관한다 (`eval/sets.yaml`, `scripts/eval-fetch.sh policy`). 받은 파일은 `eval/datasets/` 에 둔다 (`.gitignore` 대상).
 
 ## 종류
 
