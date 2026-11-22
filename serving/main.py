@@ -5,10 +5,10 @@ from fastapi import Depends, FastAPI
 from fastapi.responses import StreamingResponse
 
 from schemas.search import SearchStreamRequest
-from serving.answer.claude_answer import ClaudeAnswerer
 from serving.config import Settings, get_settings
-from serving.pipeline.candidates import CandidateFinder, NotReadyCandidateFinder
-from serving.pipeline.search import Answerer, run_search
+from serving.pipeline.answer import Answerer, ClaudeAnswerer
+from serving.pipeline.run import run_search
+from serving.pipeline.search import CandidateFinder, NotReadyCandidateFinder
 from serving.security import require_internal_token
 from serving.sse import sse_stream
 
