@@ -1,0 +1,97 @@
+{
+  "$defs": {
+    "EnumBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "storedAs": {
+          "description": "DB 칼럼에 name · dbValue 중 무엇이 저장되는지",
+          "enum": [
+            "name",
+            "dbValue"
+          ],
+          "title": "Storedas",
+          "type": "string"
+        },
+        "values": {
+          "items": {
+            "$ref": "#/$defs/EnumItem"
+          },
+          "minItems": 1,
+          "title": "Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "storedAs",
+        "values"
+      ],
+      "title": "EnumBlock",
+      "type": "object"
+    },
+    "EnumItem": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "enum 이름. 계약 · 색인 · 필터는 이 값을 쓴다 (예: ROFAN)",
+          "title": "Name",
+          "type": "string"
+        },
+        "dbValue": {
+          "description": "한글 표기. storedAs 가 dbValue 면 DB 에 이 값이 들어 있다 (예: 로판)",
+          "title": "Dbvalue",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "dbValue"
+      ],
+      "title": "EnumItem",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "GET /internal/v1/ai/works/enum-catalog 응답. enum 원본은 STORIX-BE 이고 AI 서버는 기동 때 받아 쓴다.",
+  "properties": {
+    "genre": {
+      "$ref": "#/$defs/EnumBlock"
+    },
+    "ageClassification": {
+      "$ref": "#/$defs/EnumBlock"
+    },
+    "worksType": {
+      "$ref": "#/$defs/EnumBlock"
+    },
+    "platform": {
+      "$ref": "#/$defs/EnumBlock"
+    },
+    "adultAgeClassifications": {
+      "description": "19금으로 보는 연령가 enum 이름. 지금은 AGE_18 만",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Adultageclassifications",
+      "type": "array"
+    },
+    "selectableWorksTypes": {
+      "description": "챗봇 설정에서 고를 수 있는 작품 유형 enum 이름. 만화(COMIC)는 빠진다",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Selectableworkstypes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "genre",
+    "ageClassification",
+    "worksType",
+    "platform",
+    "adultAgeClassifications",
+    "selectableWorksTypes"
+  ],
+  "title": "WorksCatalog",
+  "type": "object"
+}

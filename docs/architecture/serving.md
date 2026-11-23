@@ -85,7 +85,7 @@ sequenceDiagram
 
 - `/internal/**` 경로는 리버스 프록시(Caddy)에서 외부 노출을 막고, FastAPI ↔ Spring 사이 서비스 토큰(공유 비밀값 헤더)을 두고 일반 JWT 필터와 분리
 - userId 는 Spring 이 JWT 에서 꺼내 넘긴 값만 사용. Claude 가 만든 도구 입력에서 userId 를 받으면 프롬프트 조작으로 다른 사람 정보를 조회할 수 있음
-- 처음 API: `GET /internal/users/{userId}/context` (취향 장르 · 해시태그, 서재 · 관심작품 ID). 형식은 [api-contract.md](api-contract.md)
+- 처음 API: `GET /internal/v1/ai/users/{userId}/context` (취향 장르 · 해시태그, 서재 · 관심작품 ID). 형식은 [api-contract.md](api-contract.md)
 - 닉네임 · 이메일은 넣지 않고, 비공개 · 차단 · 성인 규칙은 API 안에서 적용된 결과로
 - 호출이 한 바퀴 도는 구조(앱 → Spring → FastAPI → Spring /internal)라 짧은 타임아웃(1~2초), 실패하면 맥락 없이 답변
 

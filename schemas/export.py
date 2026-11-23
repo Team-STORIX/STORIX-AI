@@ -15,6 +15,7 @@ from schemas.index import IndexedWork, IndexWorksRequest, IndexWorksResponse
 from schemas.search import SearchStreamRequest
 from schemas.tools import RecommendWorksInput
 from schemas.user_context import UserContext
+from schemas.works_catalog import WorksCatalog
 
 OUT_DIR = Path(__file__).parent / "json"
 
@@ -26,6 +27,7 @@ TARGETS: dict[str, type[BaseModel] | TypeAdapter] = {
     "index-works-response": IndexWorksResponse,
     "indexed-work": IndexedWork,
     "user-context": UserContext,
+    "works-catalog": WorksCatalog,
     "eval-report": EvalReport,
     "policy-case": PolicyCase,
 }

@@ -40,6 +40,12 @@
 
 ## 2. enum 값
 
+원본은 STORIX-BE enum 이고, AI 서버는 기동 때 `GET /internal/v1/ai/works/enum-catalog` 로 받는다 ([schemas/works_catalog.py](../../schemas/works_catalog.py)). 아래 표는 읽기용 사본이라 어긋나면 API 응답이 맞다
+
+- 계약 · 색인 · 필터 · 조건 추출은 enum 이름(`ROFAN`)을 쓴다
+- DB 칼럼에는 장르 · 연령가 · 작품 유형은 한글 값(`로판`), 플랫폼만 이름(`NAVER_WEBTOON`)이 들어 있다 (`storedAs`). DB 에서 바로 읽어 색인할 때는 카탈로그로 이름으로 바꾼다
+- 내부 API 사용자 맥락의 `preferredGenres` 도 지금은 한글 값(`로판`)으로 온다
+
 | enum | 값 |
 | --- | --- |
 | `WorksType` | `WEBTOON` 웹툰 · `WEBNOVEL` 웹소설 · `COMIC` 만화 · `BOOK` 단행본 |
@@ -62,7 +68,7 @@
 
 ## 4. 사용자 쪽 (AI 서버는 직접 안 읽음)
 
-- 취향 장르 · 해시태그, 서재(리뷰한 작품) · 관심작품 ID 는 Spring 내부 API `GET /internal/ai/users/{userId}/context` 로 받는다 ([api-contract.md](api-contract.md))
+- 취향 장르 · 해시태그, 서재(리뷰한 작품) · 관심작품 ID 는 Spring 내부 API `GET /internal/v1/ai/users/{userId}/context` 로 받는다 ([api-contract.md](api-contract.md))
 - 19금 설정 · 성인 인증 여부 · 작품 유형 · 서재 작품 ID · 최근 대화는 질문마다 Spring 이 `SearchStreamRequest` 에 넣어 보낸다
 - 대화 기록 · 챗봇 설정(`ai_chats` · `ai_chat_messages` · `ai_chat_settings`) 은 Spring 만 읽고 쓴다
 
