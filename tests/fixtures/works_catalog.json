@@ -1,0 +1,142 @@
+{
+  "genre": {
+    "storedAs": "dbValue",
+    "values": [
+      {
+        "name": "ROMANCE",
+        "dbValue": "로맨스"
+      },
+      {
+        "name": "FANTASY",
+        "dbValue": "판타지"
+      },
+      {
+        "name": "DAILY",
+        "dbValue": "일상"
+      },
+      {
+        "name": "ROFAN",
+        "dbValue": "로판"
+      },
+      {
+        "name": "HISTORICAL",
+        "dbValue": "무협"
+      },
+      {
+        "name": "DRAMA",
+        "dbValue": "드라마"
+      },
+      {
+        "name": "GAG",
+        "dbValue": "개그"
+      },
+      {
+        "name": "THRILLER",
+        "dbValue": "스릴러"
+      },
+      {
+        "name": "ACTION",
+        "dbValue": "액션"
+      },
+      {
+        "name": "SPORTS",
+        "dbValue": "스포츠"
+      },
+      {
+        "name": "SENTIMENTAL",
+        "dbValue": "감성"
+      },
+      {
+        "name": "BL",
+        "dbValue": "BL"
+      },
+      {
+        "name": "MODERN_FANTASY",
+        "dbValue": "현판"
+      }
+    ]
+  },
+  "ageClassification": {
+    "storedAs": "dbValue",
+    "values": [
+      {
+        "name": "ALL",
+        "dbValue": "전체연령가"
+      },
+      {
+        "name": "AGE_12",
+        "dbValue": "12세 이용가"
+      },
+      {
+        "name": "AGE_15",
+        "dbValue": "15세 이용가"
+      },
+      {
+        "name": "AGE_18",
+        "dbValue": "18세 이용가"
+      }
+    ]
+  },
+  "worksType": {
+    "storedAs": "dbValue",
+    "values": [
+      {
+        "name": "WEBTOON",
+        "dbValue": "웹툰"
+      },
+      {
+        "name": "WEBNOVEL",
+        "dbValue": "웹소설"
+      },
+      {
+        "name": "COMIC",
+        "dbValue": "만화"
+      },
+      {
+        "name": "BOOK",
+        "dbValue": "단행본"
+      }
+    ]
+  },
+  "platform": {
+    "storedAs": "name",
+    "values": [
+      {
+        "name": "NAVER_WEBTOON",
+        "dbValue": "네이버 웹툰"
+      },
+      {
+        "name": "KAKAO_PAGE",
+        "dbValue": "카카오페이지"
+      },
+      {
+        "name": "RIDIBOOKS",
+        "dbValue": "리디북스"
+      },
+      {
+        "name": "BOMTOON",
+        "dbValue": "봄툰"
+      },
+      {
+        "name": "NAVER_SERIES",
+        "dbValue": "네이버 시리즈"
+      },
+      {
+        "name": "LEZHIN",
+        "dbValue": "레진코믹스"
+      },
+      {
+        "name": "MRBLUE",
+        "dbValue": "미스터블루"
+      }
+    ]
+  },
+  "adultAgeClassifications": [
+    "AGE_18"
+  ],
+  "selectableWorksTypes": [
+    "WEBTOON",
+    "WEBNOVEL",
+    "BOOK"
+  ]
+}

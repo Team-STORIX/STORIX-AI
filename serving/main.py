@@ -1,3 +1,5 @@
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from functools import lru_cache
 
 import anthropic
@@ -5,6 +7,7 @@ from fastapi import Depends, FastAPI
 from fastapi.responses import StreamingResponse
 
 from schemas.search import SearchStreamRequest
+from serving.catalog import load_catalog
 from serving.config import Settings, get_settings
 from serving.pipeline.answer import Answerer, ClaudeAnswerer
 from serving.pipeline.run import run_search
@@ -28,8 +31,15 @@ def get_answerer(settings: Settings = Depends(get_settings)) -> Answerer:
     return ClaudeAnswerer(get_anthropic_client(), settings)
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    # 작품 enum 카탈로그. 못 받으면 기동 실패
+    app.state.catalog = await load_catalog(get_settings())
+    yield
+
+
 def create_app() -> FastAPI:
-    app = FastAPI(title="STORIX-AI", docs_url=None, redoc_url=None, openapi_url=None)
+    app = FastAPI(title="STORIX-AI", docs_url=None, redoc_url=None, openapi_url=None, lifespan=lifespan)
 
     @app.get("/health")
     def health() -> dict[str, str]:

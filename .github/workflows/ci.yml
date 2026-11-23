@@ -26,6 +26,8 @@ jobs:
         run: uv sync --frozen
       - name: pytest
         run: uv run pytest -q
+      - name: 모듈 구조
+        run: uv run lint-imports
 
   image:
     name: 이미지 빌드
@@ -45,7 +47,10 @@ jobs:
           cache-to: type=gha,mode=max
       - name: 기동 확인
         run: |
-          docker run -d --name ai -e STORIX_AI_INTERNAL_TOKEN=ci-token -p 8090:8090 storix-ai:ci
+          # BE 없이 뜨게 카탈로그는 fixture 파일로
+          docker run -d --name ai -e STORIX_AI_INTERNAL_TOKEN=ci-token \
+            -v "$PWD/tests/fixtures/works_catalog.json:/catalog.json:ro" -e STORIX_AI_CATALOG_FILE=/catalog.json \
+            -p 8090:8090 storix-ai:ci
           for _ in $(seq 1 20); do curl -sf localhost:8090/health && exit 0; sleep 1; done
           docker logs ai
           exit 1

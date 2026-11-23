@@ -7,6 +7,7 @@
 | `main.py` | 앱 생성, `/health` |
 | `config.py` | 환경변수 `STORIX_AI_*` 를 설정 클래스로 |
 | `security.py` | `/internal/**` 서비스 토큰 확인 |
+| `catalog.py` | 작품 enum 카탈로그. 기동 때 BE 에서 받아 `app.state.catalog` 에 둔다. enum 값은 여기서만 가져온다 |
 | `sse.py` | SearchEvent → SSE 프레임, heartbeat |
 | `pipeline/state.py` | 단계 사이에 넘기는 `SearchState` (요청 · 조건 · 후보), `Candidate` |
 | `pipeline/extract.py` | ① 조건 추출 (AI-06 자리) |
