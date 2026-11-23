@@ -1,6 +1,6 @@
 {
   "additionalProperties": false,
-  "description": "GET /internal/users/{userId}/context 응답. 닉네임 · 이메일은 넣지 않는다.",
+  "description": "GET /internal/v1/ai/users/{userId}/context 응답. 닉네임 · 이메일은 넣지 않는다.",
   "properties": {
     "preferredGenres": {
       "items": {

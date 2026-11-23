@@ -33,7 +33,8 @@ STORIX-AI/
 | 앱 → Spring | `GET · PUT /api/v1/ai/chat/settings` | 챗봇 설정 (19금 추천 on/off · 작품 유형). 온보딩 ④ 도 이 API 로 저장 |
 | Spring → AI | `POST /internal/search/stream` | 질문 · 대화 맥락 · 사용자 설정 전달, SSE 응답 |
 | Spring → AI | `POST /internal/index/works` | 작품 증분 색인 · 삭제 |
-| AI → Spring | `GET /internal/users/{userId}/context` | 취향 장르 · 해시태그, 서재 · 관심작품 ID |
+| AI → Spring | `GET /internal/v1/ai/users/{userId}/context` | 취향 장르 · 해시태그, 서재 · 관심작품 ID |
+| AI → Spring | `GET /internal/v1/ai/works/enum-catalog` | 작품 enum (이름 · 한글 · DB 저장 형태), 19금 연령가, 챗봇 설정 작품 유형. 기동 때 한 번 |
 
 - 대화방은 사용자당 하나다. 앱은 대화방 ID 를 몰라도 되고, 대화방은 온보딩 저장이나 첫 질문 때 서버가 만든다
 - 앱 API 는 `/api/v1/ai/` 아래에 둔다. 다른 AI 기능이 생기면 같은 곳에 붙인다

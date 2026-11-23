@@ -9,7 +9,8 @@ Spring · AI 서버 · 앱이 같이 쓰는 형식의 원본. Pydantic 모델로
 | `events.py` | AI → Spring SSE 이벤트 (progress · token · works · done · error) | `search-event` |
 | `tools.py` | Sonnet `recommend_works` 도구 입력 | `recommend-works-input` |
 | `index.py` | `POST /internal/index/works` 요청 · 응답, 색인 결과 한 건 | `index-works-request` · `index-works-response` · `indexed-work` |
-| `user_context.py` | `GET /internal/users/{userId}/context` 응답 | `user-context` |
+| `user_context.py` | `GET /internal/v1/ai/users/{userId}/context` 응답 | `user-context` |
+| `works_catalog.py` | `GET /internal/v1/ai/works/enum-catalog` 응답 (장르 · 연령가 · 작품 유형 · 플랫폼 enum) | `works-catalog` |
 | `eval.py` | 채점 결과 (이채연과 같이 확정 전 초안) | `eval-report` |
 | `eval_policy.py` | 정책 질문 한 건 ([eval/policy](../eval/policy/README.md)) | `policy-case` |
 

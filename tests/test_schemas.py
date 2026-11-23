@@ -6,6 +6,7 @@ from schemas.events import SearchEvent, WorksEvent
 from schemas.export import OUT_DIR, render
 from schemas.search import SearchStreamRequest
 from schemas.tools import RecommendWorksInput
+from schemas.works_catalog import WorksCatalog
 
 
 def test_json_schema_is_up_to_date():
@@ -73,3 +74,30 @@ def test_policy_case_example_is_valid():
     assert case.expect.must_not_say == []
     with pytest.raises(ValidationError):
         PolicyCase.model_validate({**case.model_dump(by_alias=True), "expect": {"statuses": [], "maxWorks": 0}})
+
+
+def _catalog_payload() -> dict:
+    def block(stored_as: str, *pairs: tuple[str, str]) -> dict:
+        return {"storedAs": stored_as, "values": [{"name": n, "dbValue": v} for n, v in pairs]}
+
+    return {
+        "genre": block("dbValue", ("ROFAN", "로판"), ("BL", "BL")),
+        "ageClassification": block("dbValue", ("ALL", "전체연령가"), ("AGE_18", "18세 이용가")),
+        "worksType": block("dbValue", ("WEBTOON", "웹툰"), ("COMIC", "만화")),
+        "platform": block("name", ("NAVER_WEBTOON", "네이버 웹툰")),
+        "adultAgeClassifications": ["AGE_18"],
+        "selectableWorksTypes": ["WEBTOON", "WEBNOVEL", "BOOK"],
+    }
+
+
+def test_works_catalog_reads_be_response():
+    catalog = WorksCatalog.model_validate(_catalog_payload())
+    assert catalog.genre.stored_as == "dbValue"
+    assert catalog.genre.values[0].name == "ROFAN"
+    assert catalog.platform.stored_as == "name"
+    assert catalog.adult_age_classifications == ["AGE_18"]
+
+
+def test_works_catalog_rejects_unknown_field():
+    with pytest.raises(ValidationError):
+        WorksCatalog.model_validate({**_catalog_payload(), "unknown": 1})
