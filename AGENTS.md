@@ -10,6 +10,7 @@ Claude Code · Codex 같은 AI 도구가 같이 읽는 규칙 원본이다. `CLA
 - 19금 · 미성년자 · 서재 제외 값은 Spring 이 넘긴 값만 쓴다. 프롬프트나 모델 출력으로 정책을 바꾸지 않는다
 - 추천 작품은 `recommend_works` 도구로 작품 ID 만 받는다. 제목 · 표지 · 플랫폼은 Spring 이 DB 값으로 채운다
 - 요청 · 응답 · SSE 이벤트 형식은 `schemas/` 가 원본이다. 바꾸면 STORIX-BE 와 같이 바꾼다
+- 장르 · 작품 유형 · 연령가 · 플랫폼 값은 하드코딩하지 않는다. 기동 때 BE 에서 받은 `catalog`(`serving/catalog.py`)에서 가져온다. 도구 · 필터 enum 은 `catalog.names("genre")`, DB 에서 읽은 한글 값(`로판`)은 `catalog.resolve("genre", "로판")` → `ROFAN`. ES · 계약에는 이름만 넣는다. `tests/test_no_hardcoded_enums.py` 가 막는다
 - 프롬프트 · 검색 로직을 바꾸면 평가 세트로 숫자를 비교하고 나아졌을 때만 배포한다
 - 답변 · 주석 · 커밋 · PR 은 한국어로 쓴다. `develop` · `main` 에 직접 push 하지 않는다
 
@@ -20,11 +21,13 @@ Claude Code · Codex 같은 AI 도구가 같이 읽는 규칙 원본이다. `CLA
 | 의존성 설치 | `uv sync` |
 | 테스트 | `uv run pytest` |
 | 계약 JSON Schema 다시 만들기 | `uv run python -m schemas.export` |
+| 모듈 구조 검사 | `uv run lint-imports` (규칙은 `pyproject.toml` 의 `[tool.importlinter]`) |
 | 로컬 서버 | `cp .env.example .env` 후 토큰을 채우고 `uv run uvicorn serving.main:app --reload --port 8090` |
 | 이미지 빌드 · 실행 | `docker build -t storix-ai .` → `docker run --env-file .env -p 8090:8090 storix-ai` |
 
 - `/health` 만 열려 있고 `/internal/**` 는 `X-Internal-Token` 헤더가 맞아야 한다. API 문서 화면은 끈다
-- CI(`.github/workflows/ci.yml`)는 PR · push 마다 pytest 와 이미지 빌드 · `/health` 기동 확인을 한다. ECR push · 배포는 배포 위치가 정해지면 붙인다
+- 기동 때 작품 enum 카탈로그를 `STORIX_AI_SPRING_BASE_URL` 의 BE 에서 받고, 못 받으면 뜨지 않는다. BE 없이 띄울 때는 `STORIX_AI_CATALOG_FILE=tests/fixtures/works_catalog.json`
+- CI(`.github/workflows/ci.yml`)는 PR · push 마다 pytest · `lint-imports` 와 이미지 빌드 · `/health` 기동 확인을 한다. ECR push · 배포는 배포 위치가 정해지면 붙인다
 - 평가 명령은 EV-03 때 추가한다
 
 ## 폴더

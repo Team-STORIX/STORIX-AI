@@ -20,6 +20,14 @@ class Settings(BaseSettings):
     # 오래 조용하면 Spring · 프록시가 연결을 끊지 않게 주석 줄을 보낸다
     heartbeat_seconds: float = 15.0
 
+    # Spring 내부 API (storix-net 안 주소). 토큰은 internal_token 을 같이 쓴다
+    spring_base_url: str | None = None
+    # 작품 enum 카탈로그. 파일이 있으면 BE 대신 파일을 읽는다 (로컬 · CI)
+    catalog_file: str | None = None
+    catalog_timeout_seconds: float = 5.0
+    catalog_attempts: int = 10
+    catalog_retry_seconds: float = 3.0
+
 
 @lru_cache
 def get_settings() -> Settings:

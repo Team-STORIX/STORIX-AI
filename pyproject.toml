@@ -9,12 +9,13 @@ dependencies = [
     "fastapi>=0.115,<1",
     "uvicorn[standard]>=0.32,<1",
     "anthropic>=1,<2",
+    "httpx>=0.28,<1",
 ]
 
 [dependency-groups]
 dev = [
+    "import-linter>=2.1",
     "pytest>=8.3",
-    "httpx>=0.28",
 ]
 
 [tool.uv]
@@ -23,3 +24,26 @@ package = false
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+
+# 모듈 구조 제약 (ArchUnit 같은 것). uv run lint-imports, CI 에서도 돈다
+[tool.importlinter]
+root_packages = ["schemas", "serving"]
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "계약(schemas)은 서빙 코드를 모른다"
+type = "forbidden"
+source_modules = ["schemas"]
+forbidden_modules = ["serving"]
+
+[[tool.importlinter.contracts]]
+name = "파이프라인은 BE 를 직접 부르지 않는다 (httpx 는 serving.catalog 같은 BE 클라이언트에서만)"
+type = "forbidden"
+source_modules = ["serving.pipeline"]
+forbidden_modules = ["httpx"]
+
+[[tool.importlinter.contracts]]
+name = "파이프라인은 앱 조립(serving.main)을 import 하지 않는다"
+type = "forbidden"
+source_modules = ["serving.pipeline"]
+forbidden_modules = ["serving.main"]
