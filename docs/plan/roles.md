@@ -39,13 +39,13 @@
 | AI-02 | `schemas/` 요청 · 응답 · SSE · 색인 결과 · 채점 결과 형식. 채점 형식은 이채연과 같이 | 0단계 | 이수아 | - | ✅ [#2](https://github.com/Team-STORIX/STORIX-AI/pull/2) · [#4](https://github.com/Team-STORIX/STORIX-AI/pull/4) · [#24](https://github.com/Team-STORIX/STORIX-AI/pull/24) 19금 정책값 나누기 |
 | AI-03a | 임베딩 모델 후보 2~3개 비교 (한국어 품질 · 메모리 · 속도) | 0단계 | 이채연 | EV-01a | |
 | AI-03b | 임베딩 모델 경량화 (양자화 · ONNX 등), 서버 메모리 · 속도 측정. 서버 4GB 안에서 질문 임베딩 | 1단계 | 이채연 | AI-03a | |
-| AI-04a | `works_ai` ES 매핑 (벡터 · 필터 필드 · nori). 필터 필드 이름은 AI-02 와 맞춤, 값은 enum 이름 | 1단계 | 이수아 | AI-03a | |
+| AI-04a | `works_ai` ES 매핑. 1차: 필터 필드(값은 enum 이름, 이름은 AI-02 와 맞춤) · nori 텍스트 필드. 2차: 벡터 필드 추가 (차원 · 유사도는 임베딩 모델이 정함) | 1단계 | 이수아 | 2차만 AI-03a | |
 | AI-04b | 작품 DB → embed_text 규칙 (설명 · 태그 · 장르 조합) | 1단계 | 이채연 | AI-03a | |
-| AI-04c | 전체 색인 스크립트 (작품 덤프 → embed_text → 벡터 → ES 적재). 덤프의 한글 enum 은 `catalog.resolve` 로 이름으로 | 1단계 | 이수아 | AI-04a · 04b | |
+| AI-04c | 전체 색인 스크립트. 1차: 작품 덤프 → 텍스트 · 필터 필드 적재 (벡터 없이). 2차: embed_text → 벡터 적재. 덤프의 한글 enum 은 `catalog.resolve` 로 이름으로 | 1단계 | 이수아 | AI-04a (2차는 AI-03a · 04b) | |
 | AI-05 | 증분 색인 · 삭제 API (`/internal/index/works`). 색인 로직은 AI-04c 함수 호출 | 1단계 | 이수아 | AI-04c | |
 | AI-06 | ① 조건 추출: Haiku tool use 로 작품 유형 · 장르 · 플랫폼 · 범위 밖 · 특정 작품 여부. 범위 밖은 `OFF_TOPIC`, 말한 작품이 DB 에 없으면 `WORK_NOT_FOUND` 와 고정 문구. enum 은 `catalog` 에서 | 1단계 | 이수아 | AI-02 | |
 | AI-07a | ② 필터 (19금 · 유형 · 플랫폼 · 서재). 19금은 질문 조건 먼저, 없으면 Spring 이 넘긴 설정값. 서재는 Spring 값만 | 1단계 | 이수아 | AI-04a | [#24](https://github.com/Team-STORIX/STORIX-AI/pull/24) 19금 포함 규칙 함수만 |
-| AI-07b | ③ 벡터 · 키워드 하이브리드 쿼리, RRF. 결과 `Candidate` 에 ES 의 platforms 채움 | 1단계 | 이수아 | AI-04c | |
+| AI-07b | ③ 검색 쿼리. 1차: 키워드(BM25) + 필터. 2차: 벡터(kNN) + RRF 로 하이브리드. 결과 `Candidate` 에 ES 의 platforms 채움 | 1단계 | 이수아 | AI-04c | |
 | AI-08a | ⑦ Sonnet 스트리밍 호출, 도구 입력 조각 모으기 · 파싱, 끊김 · 타임아웃 처리 | 1단계 | 이수아 | AI-02 | ✅ [#16](https://github.com/Team-STORIX/STORIX-AI/pull/16) |
 | AI-08b | ⑦ 5개 고르는 규칙, `recommend_works` 도구 스키마(작품 ID · 추천 이유 · 일치 단서), 답변 품질. 스키마는 같이, 규칙 · 품질은 이채연 | 1단계 | 이채연 · 이수아 | AI-07b · AI-09a | 🟡 [#16](https://github.com/Team-STORIX/STORIX-AI/pull/16) 도구 스키마 초안 |
 | AI-09a | 프롬프트 `system.md` · `examples.md` · `user_turn.jinja`, ~해요체 | 0단계 | 이채연 | - | |
@@ -127,18 +127,18 @@
 | 13 | ✅ BE-08 19금 · 서재 전달 | |
 | 14 | ✅ BE-13 지표 | |
 | 15 | ✅ EV-05a 대시보드 | |
-| 16 | AI-04a ES 매핑 ← AI-03a | |
+| 16 | AI-04a ES 매핑 (벡터 필드는 AI-03a 뒤) | |
 | 17 | AI-06 조건 추출 | |
 | 18 | AI-07a 필터 | |
-| 19 | AI-04c 전체 색인 ← AI-04b | |
-| 20 | AI-07b 하이브리드 검색 | |
+| 19 | AI-04c 전체 색인 (벡터는 AI-04b 뒤) | |
+| 20 | AI-07b 검색 (BM25 먼저, 벡터 들어오면 하이브리드) | |
 | 21 | AI-05 증분 색인 API | |
 | 22 | BE-10 적재 때 색인 호출 | |
 | 23 | 🟡 AI-08b **같이** (이채연 4) | |
 | 24 | AI-01c 하네스 ← EV-03 | |
 | 25 | EV-04b 오류 원인 분석 ← EV-03 | |
 
-맞춤 지점: 임베딩 모델 결정 → ES 매핑 벡터 차원(AI-03a → AI-04a), embed_text 규칙 → 전체 색인(AI-04b → AI-04c), 조건 추출 항목 · 장르 값 같이 정하기(AI-06), 채점 스크립트 → 하네스 · 오류 분석(EV-03 → 24 · 25), 도구 스키마 설계 · 처음으로 끝까지 연결(23 ↔ 4), 대화 맥락 형식 전달(AI-11a → AI-11b), **출시 판단**(EV-04b · EV-04a)
+맞춤 지점: 검색은 벡터 없이 먼저 끝까지 연결(조건 추출 → 필터 → BM25 → 답변)하고 벡터는 나중에 붙인다. 임베딩 모델 결정 → 벡터 필드 추가(AI-03a → AI-04a 2차), embed_text 규칙 → 벡터 적재(AI-04b → AI-04c 2차), 조건 추출 항목 · 장르 값 같이 정하기(AI-06), 채점 스크립트 → 하네스 · 오류 분석(EV-03 → 24 · 25), 도구 스키마 설계 · 처음으로 끝까지 연결(23 ↔ 4), 대화 맥락 형식 전달(AI-11a → AI-11b), **출시 판단**(EV-04b · EV-04a)
 
 ### 2단계 (v2)
 
