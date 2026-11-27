@@ -11,6 +11,22 @@
           "title": "Title",
           "type": "string"
         },
+        "nicknames": {
+          "description": "별칭 · 줄임말 (예: 전독시)",
+          "items": {
+            "type": "string"
+          },
+          "title": "Nicknames",
+          "type": "array"
+        },
+        "authors": {
+          "description": "글 · 그림 작가",
+          "items": {
+            "type": "string"
+          },
+          "title": "Authors",
+          "type": "array"
+        },
         "description": {
           "default": "",
           "title": "Description",
@@ -24,6 +40,7 @@
           "type": "array"
         },
         "genres": {
+          "description": "장르 enum 이름 (catalog)",
           "items": {
             "type": "string"
           },

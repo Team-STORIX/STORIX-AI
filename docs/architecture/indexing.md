@@ -97,22 +97,21 @@ VLM 이 표지를 보고 뽑는 라벨 예시
 
 매핑
 
-```json
-PUT works_ai_v1
-{
-  "mappings": {
-    "properties": {
-      "work_id":      { "type": "long" },
-      "title":        { "type": "text" },
-      "embed_text":   { "type": "text" },
-      "platforms":    { "type": "keyword" },
-      "adult":        { "type": "boolean" },
-      "text_vector":  { "type": "dense_vector", "dims": 1024, "index": true, "similarity": "cosine" },
-      "image_vector": { "type": "dense_vector", "dims": 768,  "index": true, "similarity": "cosine" }
-    }
-  }
-}
-```
+원본은 [`indexing/works_ai_index.json`](../../indexing/works_ai_index.json), 만들기 · 별칭 옮기기는 `indexing/es_index.py`. 필드 이름은 색인 계약 `IndexWork` 와 같다 (테스트가 확인)
+
+| 필드 | 타입 | 쓰는 곳 |
+| --- | --- | --- |
+| `work_id` | long | `_id` 와 같은 값 |
+| `title` · `nicknames` | text(nori) + `.bigram` + `.raw`(keyword) | BM25. 조어 많은 제목은 bigram 이 받친다. `.raw` 는 특정 작품 찾기 |
+| `authors` | text(nori) + `.raw` | 작가로 찾기 |
+| `description` | text(nori) | BM25 |
+| `tags` | keyword + `.text`(nori) | 태그 정확히 · 말로 |
+| `genres` · `work_type` · `platforms` | keyword | 필터. 값은 enum 이름 (`catalog.resolve` 로 바꾼 값) |
+| `adult` | boolean | 19금 필터 |
+
+- 분석기는 BE 피드 검색과 같은 `nori_tokenizer`(mixed) + 품사 · 한자 읽기 필터
+- 1차(벡터 없이)는 위 필드만. 2차에 `text_vector`(`dense_vector`, 차원 · 유사도는 AI-03a 에서 정한 모델)를 더한다. 필드 추가라 새 인덱스로 다시 채우고 별칭을 옮긴다
+- `dynamic: strict` 라 매핑에 없는 필드를 넣으면 ES 가 거절한다
 
 적재
 
@@ -142,8 +141,8 @@ POST works_ai/_search
 }
 ```
 
-- `dims` 는 실제 모델 크기에 맞춤 (bge-m3 는 1024)
-- `platforms` · `adult` 는 필터용. 완결 · 연재 여부는 작품 DB 에 없어 넣지 않는다. embed_text 를 text 로도 넣어 BM25 하이브리드
+- 2차 `dims` 는 실제 모델 크기에 맞춤 (bge-m3 는 1024)
+- 완결 · 연재 여부는 작품 DB 에 없어 넣지 않는다
 - `_id` = `work_id` 로 두면 같은 작품은 덮어써서 증분 반영이 쉬움
 - 모델 교체는 별칭으로: `works_ai_v2` 를 다 채운 뒤 `works_ai` 가 가리키는 대상만 교체
 - 인덱스는 환경(dev · prod)마다 따로 만들어서 환경 간 작품 ID 차이와 무관

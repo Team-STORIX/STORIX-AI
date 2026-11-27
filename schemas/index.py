@@ -7,9 +7,11 @@ from schemas.common import WorkType
 class IndexWork(ContractModel):
     work_id: int
     title: str
+    nicknames: list[str] = Field(default_factory=list, description="별칭 · 줄임말 (예: 전독시)")
+    authors: list[str] = Field(default_factory=list, description="글 · 그림 작가")
     description: str = ""
     tags: list[str] = Field(default_factory=list)
-    genres: list[str] = Field(default_factory=list)
+    genres: list[str] = Field(default_factory=list, description="장르 enum 이름 (catalog)")
     work_type: WorkType
     platforms: list[str] = Field(default_factory=list, description="연재 플랫폼. 작품 하나가 여러 곳에 있을 수 있다")
     adult: bool
