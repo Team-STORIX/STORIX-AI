@@ -153,4 +153,4 @@ flowchart TB
 | <img src="https://github.com/Immmii.png" width="160px"> | <img src="https://github.com/codus02.png" width="160px"> |
 |:---:|:---:|
 | __이수아<br>[@Immmii](https://github.com/Immmii)__ | __이채연<br>[@codus02](https://github.com/codus02)__ |
-| 개발 환경 · CI · 인프라 · Hub 배포 <br/> Spring 연동 · API 계약 · SSE 스트리밍 | 임베딩 · 색인 · 검색 <br/> 프롬프트 · 평가 세트 · 채점 |
+| 개발 환경 · CI · 인프라 · Hub 배포 <br/> Spring 연동 · API 계약 · SSE 스트리밍 <br/> ES 색인 · 조건 추출 · 필터 · 검색 | 임베딩 모델 · embed_text 규칙 <br/> 프롬프트 · 평가 세트 · 채점 |
