@@ -22,6 +22,8 @@ eval/datasets/
 eval/results/
 models/
 *.jsonl
+*.jsonl.gz
+*.duckdb
 *.parquet
 *.npy
 
