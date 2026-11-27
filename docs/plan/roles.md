@@ -39,7 +39,7 @@
 | AI-02 | `schemas/` 요청 · 응답 · SSE · 색인 결과 · 채점 결과 형식. 채점 형식은 이채연과 같이 | 0단계 | 이수아 | - | ✅ [#2](https://github.com/Team-STORIX/STORIX-AI/pull/2) · [#4](https://github.com/Team-STORIX/STORIX-AI/pull/4) · [#24](https://github.com/Team-STORIX/STORIX-AI/pull/24) 19금 정책값 나누기 |
 | AI-03a | 임베딩 모델 후보 2~3개 비교 (한국어 품질 · 메모리 · 속도) | 0단계 | 이채연 | EV-01a | |
 | AI-03b | 임베딩 모델 경량화 (양자화 · ONNX 등), 서버 메모리 · 속도 측정. 서버 4GB 안에서 질문 임베딩 | 1단계 | 이채연 | AI-03a | |
-| AI-04a | `works_ai` ES 매핑. 1차: 필터 필드(값은 enum 이름, 이름은 AI-02 와 맞춤) · nori 텍스트 필드. 2차: 벡터 필드 추가 (차원 · 유사도는 임베딩 모델이 정함) | 1단계 | 이수아 | 2차만 AI-03a | |
+| AI-04a | `works_ai` ES 매핑. 1차: 필터 필드(값은 enum 이름, 이름은 AI-02 와 맞춤) · nori 텍스트 필드. 2차: 벡터 필드 추가 (차원 · 유사도는 임베딩 모델이 정함) | 1단계 | 이수아 | 2차만 AI-03a | 🟡 1차 |
 | AI-04b | 작품 DB → embed_text 규칙 (설명 · 태그 · 장르 조합) | 1단계 | 이채연 | AI-03a | |
 | AI-04c | 전체 색인 스크립트. 1차: 작품 덤프 → 텍스트 · 필터 필드 적재 (벡터 없이). 2차: embed_text → 벡터 적재. 덤프의 한글 enum 은 `catalog.resolve` 로 이름으로 | 1단계 | 이수아 | AI-04a (2차는 AI-03a · 04b) | |
 | AI-05 | 증분 색인 · 삭제 API (`/internal/index/works`). 색인 로직은 AI-04c 함수 호출 | 1단계 | 이수아 | AI-04c | |

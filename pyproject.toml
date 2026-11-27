@@ -10,6 +10,7 @@ dependencies = [
     "uvicorn[standard]>=0.32,<1",
     "anthropic>=1,<2",
     "httpx>=0.28,<1",
+    "elasticsearch>=8.18,<9",
 ]
 
 [dependency-groups]
