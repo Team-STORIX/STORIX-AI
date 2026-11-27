@@ -10,6 +10,7 @@
 | 항목 | 결정 | 이유 |
 | --- | --- | --- |
 | 받기 | Hub 스크립트 · 스킬 `works-fetch` ("작품 덤프 받아 줘"). 최신 팩을 찾아 manifest 의 sha256 · 건수로 확인 | 버킷 · 팩 경로를 사람이 찾지 않게. 평가 세트 받기(`eval-fetch`)와 같은 방식 |
+| 이 레포에서 쓰기 | Hub 를 서브모듈 `hub/` 로 연결하고, 이 레포 스킬 `works-fetch` 가 `hub/scripts/` 를 부른다 | 스크립트는 Hub 한 곳에. 데이터는 레포 밖이라 공개 레포 폴더에 놓이지 않는다. CI 는 서브모듈을 받지 않는다 |
 | 받는 곳 | 레포 밖 `~/storix-data/works/<env>/<팩>/works.jsonl` | 어느 레포에서 실행해도 prod 데이터가 공개 레포 작업 폴더에 놓이지 않게. git 훅보다 확실하다 |
 | 접근 권한 | 각자 IAM 계정 (`aws configure`, 콘솔 로그인 불필요). 팀원 정책에 `*/data/works/*` 읽기 | 받은 기록이 계정 단위로 남는다 |
 | 보기 | DuckDB. jsonl 을 import 없이 SQL 로 읽고, 브라우저 UI(`duckdb -ui`)와 IDE Database 창(IntelliJ · DataGrip · PyCharm)에서 본다 ("작품 덤프 열어 줘") | 서버 · 적재 없이 파일 하나로. 배열 컬럼(`hashtags` · `platforms`)도 `unnest` 로 집계. 작품 6천여 건은 즉시 |
@@ -26,7 +27,6 @@
 ## 남은 것
 
 - 이 레포에서 덤프를 읽는 모듈 (`STORIX_AI_WORKS_FILE` 로 경로를 받아 enum 을 이름으로 바꿔 돌려줌). 색인(AI-04c) 작업에서
-- `works-fetch` 를 Claude Code 플러그인으로 배포해 어느 레포에서든 부를지. 지금은 Hub 레포 스킬
 
 ## 관련
 

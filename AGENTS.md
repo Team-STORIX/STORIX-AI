@@ -21,6 +21,7 @@ Claude Code · Codex 같은 AI 도구가 같이 읽는 규칙 원본이다. `CLA
 | 의존성 설치 | `uv sync` |
 | 테스트 | `uv run pytest` |
 | 계약 JSON Schema 다시 만들기 | `uv run python -m schemas.export` |
+| 작품 덤프 받기 · 보기 | 스킬 `works-fetch` (`hub/scripts/works-fetch.sh` · `works-open.sh`). 데이터는 레포 밖 `~/storix-data` |
 | 모듈 구조 검사 | `uv run lint-imports` (규칙은 `pyproject.toml` 의 `[tool.importlinter]`) |
 | 로컬 서버 | `cp .env.example .env` 후 토큰을 채우고 `uv run uvicorn serving.main:app --reload --port 8090` |
 | 이미지 빌드 · 실행 | `docker build -t storix-ai .` → `docker run --env-file .env -p 8090:8090 storix-ai` |
@@ -40,6 +41,7 @@ Claude Code · Codex 같은 AI 도구가 같이 읽는 규칙 원본이다. `CLA
 | `eval/` | 채점 스크립트. 평가 세트 원본은 커밋하지 않음 |
 | `schemas/` | API · SSE · 색인 결과 · 채점 결과 형식 |
 | `docs/` | 설계 문서와 결정 기록 |
+| `hub/` | 서브모듈 STORIX-AI-Hub (비공개). 작품 덤프 받기 · 보기 스크립트를 여기서 부른다. 처음 `git submodule update --init hub` |
 
 ## 문서
 
